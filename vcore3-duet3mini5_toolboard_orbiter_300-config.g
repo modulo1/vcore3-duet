@@ -199,6 +199,7 @@ M558 P9 C"121.io0.in" H5 F100 T2000 A5                                	    ; set
                                                                        	    ;  to toolboard.io0.in (121.io0.in)
 G31 P25 X-28.00 Y-13.00 Z0.90                                         	    ; set Z probe trigger value (P25) 
                                                                        	    ;  offset (X-28.00,Y-13.00) and 
+									    ;  trigger height (Z0.90) 
 									    ;  more Z means closer to the bed
 
 ; configuration - pressure advance
