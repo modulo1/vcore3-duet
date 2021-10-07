@@ -123,12 +123,12 @@ M143 H0 S110                                                                ; se
 
 ;; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ;;
 ;; Run Bed PID Tune!! Using code below                                                              ;;
-;; M303 H0 S90									                            ; run pid auto-tune     ;;
+;; M303 H0 S90								    ; run pid auto-tune     ;;
 ;;                                                                          ; routine on bed at 90C ;;
 ;; replace M307 below with results from M303                                                        ;;
 ;; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ;;
-M307 H0 B0 R0.487 C383.6 D2.05 S1.00 										; this is my M307
-																			;  find your own
+M307 H0 B0 R0.487 C383.6 D2.05 S1.00					    ; this is my M307
+									    ;  find your own
 																			
 ;;; duet may complain that heater 0 (H0) may reach unsafe temperature
 ;;; this should be ok to ignore as we limit bed temp with M143 above
@@ -159,43 +159,43 @@ M143 H1 S280                                                                ; se
 ;; we define E-axis seperately here to make future extruder changes easier.
 ;; different values for M203, M201, M207 etc are for different Orbiter motors
 
-M350 E16 I1                                                     			      ; microstepping set to 16 (E16) with interpolation (I1)
-M92 E690                                                        	      		; set extruder steps per mm, 0.9 angle/step
-                                                                    			 	;  (LDO-36STH20-1004AHG with Orbiter v1.5)
-M203 E7200.00                                                       				; max speed mm/min (E3600 or E7200)
-M566 E300                                                             			; instantaneous speed change mm/min
-M201 E800                                                             			; acceleration mm/s^2 (E600 or E800)
-M906 E1200 I10                                                         			; set extruder motor current (E500 or E1200, in mA)   
-                                                                       			;  and idle factor in per cent (I10 = 10%) 
-M207 S1.5 F7200 Z0.2                                                   			; firmware retraction (S1.5 = length in mm, feed F3600 or F7200, z-hop Z0.2)
+M350 E16 I1								    ; microstepping set to 16 (E16) with interpolation (I1)
+M92 E690                                                        	    ; set extruder steps per mm, 0.9 angle/step
+                                                                    	    ;  (LDO-36STH20-1004AHG with Orbiter v1.5)
+M203 E7200.00                                                       	    ; max speed mm/min (E3600 or E7200)
+M566 E300                                                             	    ; instantaneous speed change mm/min
+M201 E800                                                             	    ; acceleration mm/s^2 (E600 or E800)
+M906 E1200 I10                                                         	    ; set extruder motor current (E500 or E1200, in mA)   
+                                                                       	    ;  and idle factor in per cent (I10 = 10%) 
+M207 S1.5 F7200 Z0.2                                                   	    ; firmware retraction (S1.5 = length in mm, feed F3600 or F7200, z-hop Z0.2)
 
 ; configuration - extruder thermistor
 M308 S1 P"121.temp0" Y"thermistor" T100000 B4725 C7.060000e-8 A"Hotend"     ; configure sensor 1 (S1) as thermistor 
-                                                                            ;  on pin toolboard.temp0 (121.temp0)  
+                                                                            ;  on pin toolboard.temp0 (121.temp0)
+									    
 ;; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ;;
 ;; Run hotend PID Tune!! Using code below                                                           ;;
-;; M303 H1 S240									                                            ; run pid auto-tune     ;;
+;; M303 H1 S240								    ; run pid auto-tune     ;;
 ;;                                                                          ; routine on hotend     ;;
 ;;                                                                          ; at 240C               ;;
 ;; replace M307 below with results from M303                                                        ;;
 ;; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ;;
 
-M307 H1 B0 R1.620 C183.6 D7.36 S1.00 V24.0								                	; this is my M307
-																			                                      ;  find your own
-
+M307 H1 B0 R1.620 C183.6 D7.36 S1.00 V24.0				    ; this is my M307
+						   		       	    ;  find your own
 ; configuration - z-probe
 
 ;; duet pins start with 0. ;;
 ;; toolboard 1lc pins start with 121. ;;
 
 ;; Inductive Probe (ezabl, pinda, superpinda, euclid)
-; M558 P5 C"!io3.in" H5 F400 T5000									                     		; set Z probe type to unmodulated and the dive height + speeds
-; G31 P500 X-27.8 Y-12 Z0.20									                        			; set Z probe trigger value, offset and trigger height, more Z means closer to the bed
+; M558 P5 C"!io3.in" H5 F400 T5000							; set Z probe type to unmodulated and the dive height + speeds
+; G31 P500 X-27.8 Y-12 Z0.20								; set Z probe trigger value, offset and trigger height, more Z means closer to the bed
 
 ;; BLTouch
 M950 S0 C"121.io0.out"                                          	      		; Create a servo pin (S0) on toolboard.io0.out (121.io0.out)
 M558 P9 C"121.io0.in" H5 F100 T2000 A5                                			; set Z probe type to BLTouch (P9) and the 
-                                                                    			 	;  dive height (H5) + speeds (F100) and input 
+                                                                    			;  dive height (H5) + speeds (F100) and input 
                                                                        			;  to toolboard.io0.in (121.io0.in)
 G31 P25 X-28.00 Y-13.00 Z0.90                                         			; set Z probe trigger value (P25) 
                                                                        			;  offset (X-28.00,Y-13.00) and 
@@ -204,6 +204,6 @@ G31 P25 X-28.00 Y-13.00 Z0.90                                         			; set Z
 
 ;------------------------------------------------------------------------------------------------------------------------------
 ; configuration - pressure advance
-M404 N1.75 D0.4                                                             ; Filament width (N1.75mm) and nozzle diameter (D0.4mm)
-T0                                                                          ; select tool0
+M404 N1.75 D0.4                                                           		; Filament width (N1.75mm) and nozzle diameter (D0.4mm)
+T0                                                                          		; select tool0
 M572 D0 S0.10
