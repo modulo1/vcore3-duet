@@ -189,21 +189,19 @@ M307 H1 B0 R1.620 C183.6 D7.36 S1.00 V24.0				    ; this is my M307
 ;; toolboard 1lc pins start with 121. ;;
 
 ;; Inductive Probe (ezabl, pinda, superpinda, euclid)
-; M558 P5 C"!io3.in" H5 F400 T5000							; set Z probe type to unmodulated and the dive height + speeds
-; G31 P500 X-27.8 Y-12 Z0.20								; set Z probe trigger value, offset and trigger height, more Z means closer to the bed
+; M558 P5 C"!io3.in" H5 F400 T5000					    ; set Z probe type to unmodulated and the dive height + speeds
+; G31 P500 X-27.8 Y-12 Z0.20						    ; set Z probe trigger value, offset and trigger height, more Z means closer to the bed
 
 ;; BLTouch
-M950 S0 C"121.io0.out"                                          	      		; Create a servo pin (S0) on toolboard.io0.out (121.io0.out)
-M558 P9 C"121.io0.in" H5 F100 T2000 A5                                			; set Z probe type to BLTouch (P9) and the 
-                                                                    			;  dive height (H5) + speeds (F100) and input 
-                                                                       			;  to toolboard.io0.in (121.io0.in)
-G31 P25 X-28.00 Y-13.00 Z0.90                                         			; set Z probe trigger value (P25) 
-                                                                       			;  offset (X-28.00,Y-13.00) and 
-																  		                                    	;  trigger height (Z0.90) 
-                                                                       			;  more Z means closer to the bed
+M950 S0 C"121.io0.out"                                          	    ; Create a servo pin (S0) on toolboard.io0.out (121.io0.out)
+M558 P9 C"121.io0.in" H5 F100 T2000 A5                                	    ; set Z probe type to BLTouch (P9) and the 
+                                                                    	    ;  dive height (H5) + speeds (F100) and input 
+                                                                       	    ;  to toolboard.io0.in (121.io0.in)
+G31 P25 X-28.00 Y-13.00 Z0.90                                         	    ; set Z probe trigger value (P25) 
+                                                                       	    ;  offset (X-28.00,Y-13.00) and 
+									    ;  more Z means closer to the bed
 
-;------------------------------------------------------------------------------------------------------------------------------
 ; configuration - pressure advance
-M404 N1.75 D0.4                                                           		; Filament width (N1.75mm) and nozzle diameter (D0.4mm)
-T0                                                                          		; select tool0
+M404 N1.75 D0.4                                                             ; Filament width (N1.75mm) and nozzle diameter (D0.4mm)
+T0                                                                          ; select tool0
 M572 D0 S0.10
