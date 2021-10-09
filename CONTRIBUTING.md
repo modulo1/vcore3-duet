@@ -13,7 +13,7 @@ section titles start with '; ' and end with ';'
 ;;  moving to a new line and indent one space
 ;;  if needed to keep width managable
 ;;; variable definitions start with ';;; '
-;;; no more than two per line, if possible
+;;; no more than two per line, like this if possible
 ;;; longer variables get their own line
 ;M9999 HOO"this is our fake gcode" P"we keep it connected to it's comment block"
 
