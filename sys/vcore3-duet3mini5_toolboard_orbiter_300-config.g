@@ -1,9 +1,6 @@
 ; config.g by omtek 
 ;; initial commit - 06 October 2021
 ;; rewrite - 08 October 2021
-;;; removed two-column format in favor of
-;;;  in-line explanations
-;; increment this by one when you remember - changes: 10
 
 ; current configuration ;
 ; duet 3 mini 5+ running RRF 3.3 with raspberry pi 4B+ 4GB
@@ -14,7 +11,6 @@
 ; dragon sf hotend
 
 ;====;
-
 ; begin config.g ;
 
 ; Display initial welcome message ; this is the default welcome message included with the image.  
