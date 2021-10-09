@@ -47,6 +47,14 @@ try to keep variable definitions in the following format:
 ```
 ;;; B0 = disable bang-bang mode for bed 
 ;;;  heater (H0) and set PWM limit (S1.00)
+
+;;; set fan 0 (P0) to
+;;; C = custom name hotend fan
+;;; S = fan speed, initial value
+;;; H = thermostatic control turned on for hotend fan
+;;; T = trigger temperature in celcius; integer or range (T45= 45C) 
+;;; L = minimum fan speed (L255 = full speed)                                                  
+M106 P0 C"hotend fan" S0 H1 T45 L255   
 ```
 but they can be named and defined in order like shown above, if necessary
 
