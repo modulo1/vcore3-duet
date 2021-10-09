@@ -20,6 +20,18 @@ section titles start with '; ' and end with ';'
 ;; here's a related configuration section (e.g. heater+sensor)
 ;M88888 P"and more code"
 
+;; sequential command blocks
+;;; that are necessary for a particular configuration section
+;M11111 A"totally fake gcode block" V11 C"should group togather"
+;; like this
+;;; think pairing fans or thermistors and inputs
+
+;; whereas blocks that are relevant, but not 
+;;; necessarily related
+;M7777777 C"and here's the gcode"
+
+;; don't need to be grouped together
+
 ; and we start a new configuration block ; 
 ;; and so on and so forth
 ```
@@ -56,5 +68,5 @@ try to keep variable definitions in the following format:
 ;;; L = minimum fan speed (L255 = full speed)                                                  
 M106 P0 C"hotend fan" S0 H1 T45 L255   
 ```
-but they can be named and defined in order like shown above, if necessary
+so they can be named and defined in order like shown above, if necessary
 
