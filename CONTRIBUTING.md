@@ -8,6 +8,11 @@ section titles start with '; ' and end with ';'
  ```
 ; gcode comment blocks start with '; '
 
+; if example gcode needs to be included
+;M9999999 C"it will omit the leading space after
+;M77777 A"the last ;"
+
+
 ; this starts a configuration block ; 
 ;; here we talk a little more about it
 ;;  moving to a new line and indent one space
@@ -15,20 +20,20 @@ section titles start with '; ' and end with ';'
 ;;; variable definitions start with ';;; '
 ;;; no more than two per line, like this if possible
 ;;; longer variables get their own line
-;M9999 HOO"this is our fake gcode" P"we keep it connected to it's comment block"
+M9999 HOO"this is our fake gcode" P"we keep it connected to it's comment block"
 
 ;; here's a related configuration section (e.g. heater+sensor)
-;M88888 P"and more code"
+M88888 P"and more code"
 
 ;; sequential command blocks
 ;;; that are necessary for a particular configuration section
-;M11111 A"totally fake gcode block" V11 C"should group togather"
+M11111 A"totally fake gcode block" V11 C"should group togather"
 ;; like this
 ;;; think pairing fans or thermistors and inputs
 
 ;; whereas blocks that are relevant, but not 
 ;;; necessarily related
-;M7777777 C"and here's the gcode"
+M7777777 C"and here's the gcode"
 
 ;; don't need to be grouped together
 
