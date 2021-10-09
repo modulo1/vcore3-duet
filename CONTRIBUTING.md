@@ -41,3 +41,12 @@ all variables in gcode commands should be explicily named and defined
 including single variable commands
 
  - with the exception of implied variables for axes' (X, Y, Z, E)
+
+try to keep variable definitions in the following format:
+
+```
+;;; B0 = disable bang-bang mode for bed 
+;;;  heater (H0) and set PWM limit (S1.00)
+```
+but they can be named and defined in order like shown above, if necessary
+
