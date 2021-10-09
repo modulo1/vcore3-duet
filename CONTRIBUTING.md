@@ -59,11 +59,24 @@ including single variable commands
 
  - with the exception of implied variables for axes' (X, Y, Z, E)
 
-try to keep variable definitions in the following format:
+try to keep variable definitions in the following formats:
 
 ```
-;;; B0 = disable bang-bang mode for bed 
-;;;  heater (H0) and set PWM limit (S1.00)
+;;; on bed (H0)
+;;; B0 = disable bang-bang mode   
+;;; and set PWM limit (S1.00) 
+M307 H0 B0 S1.00 
+
+[...]
+
+;;; configure sensor 0 (S0) on  
+;;; pin duet.temp0 (0.temp0) as thermistor on (Y) 
+;;; T = thermistor resistance at 25°C
+;;; B = beta value
+;;; A = named bed
+M308 S0 P"0.temp0" Y"thermistor" T100000 B3950 A"bed"
+
+[...]
 
 ;;; set fan 0 (P0) to
 ;;; C = custom name hotend fan
