@@ -69,6 +69,12 @@ M307 H0 B0 S1.00
 
 [...]
 
+;; Set idle timeout
+;;;  S30 = 30s																		                                      
+M84 S30  
+
+[...]
+
 ;;; configure sensor 0 (S0) on  
 ;;; pin duet.temp0 (0.temp0) as thermistor on (Y) 
 ;;; T = thermistor resistance at 25°C
