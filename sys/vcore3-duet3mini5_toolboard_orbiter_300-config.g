@@ -111,10 +111,11 @@ M203 X10800.00 Y10800.00 Z1000.00
 ;; set accelerations (mm/s^2)                                          
 M201 X3000.00 Y3000.00 Z100.00                                              
 
-; configuration - axis min/max; our printer is 300mm^3 volume ;
-;; set axis minimum (S1)
+; configuration - axis min/max ;
+;;  our printer is 300mm^3 volume 
+;;; set axis minimum (S1)
 M208 X0 Y0 Z0 S1
-;; set axis maximum (S0)                                                            
+;;; set axis maximum (S0)                                                            
 M208 X310 Y300 Z300 S0                                                      
 
 ; configuration - endstop pins ;
