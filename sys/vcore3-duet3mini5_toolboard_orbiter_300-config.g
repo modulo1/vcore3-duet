@@ -138,7 +138,7 @@ M208 X310 Y300 Z300 S0
 ;; and allow future installation of filament sensor
 ;;; configure active high (S1) X endstop at X- (X1) on duet.io3.in (0.io3.in)
 M574 X1 S1 P"0.io3.in"   
-;;; configure Y active high (S1) endstop at Y+ (Y2) on duet.io2.in (0.io2.in)                                                   
+;;; configure active high (S1) Y endstop at Y+ (Y2) on duet.io2.in (0.io2.in)                                                   
 M574 Y2 S1 P"0.io2.in"   
 ;;; configure Z-probe (S2) endstop at low end (Z1)                                                 
 M574 Z1 S2                                                                  
