@@ -18,7 +18,7 @@
 
 ;M291 P"Please go to <a href=""https://www.duet3d.com/StartHere"" target=""_blank"">this</a> page for further instructions on how to set it up." R"Welcome to your new Duet 3!" S1 T0
 
-; Enable network ;
+; enable network ;
 ;  we're using an SBC so this is commented out
 
 ;if {network.interfaces[0].type = "ethernet"}
@@ -27,15 +27,14 @@
 ;    M552 S1
 	
 ; configuration - initial networking setup ;
-;; we want HTTP (web interface); we don't need FTP or telnet
-
-;; enable HTTP
+;; we want http (web interface); we don't need ftp or telnet
+;; enable http
 M586 P0 S1
-;; disable FTP                                                                  
+;; disable ftp                                                                  
 M586 P1 S0
-;; disable Telnet                                                                  
+;; disable telnet                                                                  
 M586 P2 S0
-;; wait for expansion boards to start (S1 = 1s)                                                                  
+;; wait for expansion boards (toolboard 1lc, tool distribution board etc) to start (S1 = 1s)                                                                  
 G4 S1                                                                       
 
 ; PanelDue init ;
@@ -54,7 +53,7 @@ M83
 ;;;  if you're using an SBC the name of the printer 
 ;;;   and the SBC hostname need to match
 M550 P"legionXY"                                                            
-; The Rat Rig V-Core 3 is a CoreXY printer
+;;; The Rat Rig V-Core 3 is a CoreXY printer
 M669 K1                                                                     
 
 ; configuration - motors ;
@@ -72,13 +71,11 @@ M669 K1
 M569 P0.0 S1 D2                                                             
 M569 P0.1 S1 D2
 M569 P0.2 S1 D2
-
 ;;; Left and right motors (X- and Y- axis, wired to driver3,driver4)
 ;;; physical drive 0.3 (X-Axis) goes backwards (S0)
 M569 P0.3 S0 D2
 ;;; physical drive 0.4 (Y-Axis) goes backwards (S0)
 M569 P0.4 S0 D2
-
 ;;; Extruder (E-axis), normally wired to driver5 (mini expansion) 
 ;;; M569 P0.5 S1 D3 ;;;
 ;;; currently wired to toolboard 1lc on 121.0
