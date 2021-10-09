@@ -9,7 +9,7 @@ section titles start with '; ' and end with ';'
 ; gcode comment blocks start with '; '
 
 ; if example gcode needs to be included
-;M9999999 C"it will omit the leading space after
+;M9999999 C"it will omit the space after
 ;M77777 A"the last ;"
 
 
