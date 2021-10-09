@@ -23,3 +23,5 @@ pause.g ✖️
 resume.g ✖️
 
 and basic filament gcode, since you'll need those as well for filament loading and unloading
+
+The end goal is a configuration bundle for a working printer that others will be able to use.
