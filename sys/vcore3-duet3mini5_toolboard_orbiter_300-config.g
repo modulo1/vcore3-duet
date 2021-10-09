@@ -18,7 +18,7 @@
 
 ;M291 P"Please go to <a href=""https://www.duet3d.com/StartHere"" target=""_blank"">this</a> page for further instructions on how to set it up." R"Welcome to your new Duet 3!" S1 T0
 
-; Enable network  ;
+; Enable network ;
 ;  we're using an SBC so this is commented out
 
 ;if {network.interfaces[0].type = "ethernet"}
@@ -42,20 +42,18 @@ G4 S1
 ;; initialize the PanelDue on serial 1 (P1), PanelDue mode /w checkum req'd (S1) and baud 115200 (B115200)
 M575 P1 S1 B115200
 
-;configuration - printer
+; configuration - printer ;
 ;; here we tell the duet board a little about our printer
-
 ;;; we're sending absolute coordinates...
 G90
 ;;;  ...and relative extruder moves 
 ;;;   be sure this is changed in your slicer                                                                        
 M83
-; set the printer name
-;  if you're in standalone mode, this can be anything 
-;  if you're using an SBC the name of the printer 
-;   and the SBC hostname need to match
+;;; set the printer name
+;;;  if you're in standalone mode, this can be anything 
+;;;  if you're using an SBC the name of the printer 
+;;;   and the SBC hostname need to match
 M550 P"legionXY"                                                            
-
 ; The Rat Rig V-Core 3 is a CoreXY printer
 M669 K1                                                                     
 
@@ -98,7 +96,7 @@ M584 X0.3 Y0.4 Z0.0:0.1:0.2 E121.0
 ;; configure microstepping with interpolation (I1)
 M350 X16 Y16 Z16 I1                                                         
 
-; configuration - motor travel (steps/mm, current, idle timeout)
+; configuration - motor travel (steps/mm, current, idle timeout) ;
 ;; set steps/mm
 M92 X80.00 Y80.00 Z800.00
 ;; set motor currents (in mA) and motor idle factor in percent (I30 = 30%)
