@@ -53,11 +53,14 @@ which references pin names and numbers to remind and reinforce
 ;; duet pins start with 0. ;;
 ;; toolboard 1lc pins start with 121. ;;
 ```
-all variables in gcode commands should be explicily named and defined
+all variables in gcode commands used for configuration should be explicily named and defined
 
-including single variable commands
+ - we don't need to define movement gcode, but we should describe what we're doing 
+   - applies to homeNNN.g, start/pause/resume/stop/cancel.g, etc.
 
- - with the exception of implied variables for axes' (X, Y, Z, E)
+ - including single variable commands
+
+   - with the exception of implied variables for axes' (X, Y, Z, E)
 
 try to keep variable definitions in the following formats:
 
