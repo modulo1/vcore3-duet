@@ -25,3 +25,12 @@ resume.g ✔️
 and working filament gcode for PETG and PLA, since you'll need those as well for filament loading and unloading
 
 The end goal is a configuration bundle for a working printer that others will be able to use.
+
+A couple of caveats: 
+
+This is a working configuration for me; I am quite happy with the prints I'm getting with it.  
+It's also not the fastest configuration.  It won't win any Speed Benchy competitions.
+
+There are two lines in the configuration that are commented out that are necessary for safe operation.  They are the result of the PID tuning you would get after running ```M303```.  I am including them so you know what they look like, but you should use the results you get from running ```M303``` yourself.
+
+Other things that are commented out include the configuration for the Paneldue 7i, and the working configuration for a BLTouch, which has been supersceded by the SuperPINDA.  There's also a configuration block for adding MCU temperature to the graph along side the extruder and bed temp.
