@@ -308,13 +308,7 @@ M566 E300
 M201 E10000  
 ;;; set extruder motor current (in mA)   
 ;;;  and idle factor in per cent (I10 = 10%)                                                           	    
-M906 E1200 I10                                                         	    
-;; firmware retraction settings
-;;; S1.5 = length in mm, feed F3600 or F7200,  
-;;; Z = z-hop
-;;;  check the filament gcode files for this, as I'm using those macros to change retraction settings and pressure advance per filament                                                                      	     
-;M207 S0.2 F7200 Z0.2                                                   	   
-
+M906 E1200 I10 
 
 ; configuration - z-probe ;
 
@@ -325,8 +319,7 @@ M906 E1200 I10
 ;; SuperPINDA installed on 121.io2
 ; set Z probe type to unmodulated and the dive height + speeds
 M558 P8 C"121.io2.in"  H1.4 F1000 T6000 A20 S0.005		
-; set Z probe trigger value, offset and trigger height, more Z means closer to the bed			    
-; G31 P500 X-27.8 Y-12 Z0.20						    
+; set Z probe trigger value, XY offset and trigger height, more Z means closer to the bed			    						    
 G31 P500 X-27.8 Y-12 Z0.995
 
 
@@ -380,6 +373,3 @@ M955 P121.0 I12 R10
 
 ;; select tool0                                                           
 T0
-;;; set extruder pressure advance amount on tool 0 (D0) to (S0.10)                                                                         
-;M572 D0 S0.10
-
