@@ -20,6 +20,7 @@ G1 E30 F300 ; Feed 30mm of filament at 300mm/min
 ;; wait for nozzle pressure to ease off
 ;;; P1000 = wait for one (1) second
 G4 P1000
+
 ;; Retract 10mm of filament at 1800mm/min
 ;;; this is to back the filament out of the melt zone to minimize oozing
 ;;; note this value, you will need to adjust the extrusion amount of your 
@@ -28,7 +29,9 @@ G1 E-10 F1800
 
 ;; Wait for moves to complete
 M400 
+
 ;; Hide the message
 M292 
+
 ;; Turn off the heater
 G10 S0 
