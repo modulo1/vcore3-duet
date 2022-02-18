@@ -26,6 +26,9 @@ and working filament gcode for PETG and PLA, since you'll need those as well for
 
 The end goal is a configuration bundle for a working printer that others will be able to use.
 
+![image](https://user-images.githubusercontent.com/30335181/154629055-50f9e716-568a-4af6-9796-2cd94b6b67b1.png)
+
+
 A couple of caveats: 
 
 This is a working configuration for me; I am quite happy with the prints I'm getting with it.  
