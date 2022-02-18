@@ -8,20 +8,20 @@ Plan on finding:
 
 config.g ✔️
 
-bed.g ✖️
+bed.g ✔️
 
-homex.g ✖️
+homex.g ✔️
 
-homey.g ✖️
+homey.g ✔️
 
-homez.g ✖️
+homez.g ✔️
 
-homeall.g ✖️
+homeall.g ✔️
 
-pause.g ✖️
+pause.g ✔️
 
-resume.g ✖️
+resume.g ✔️
 
-and basic filament gcode, since you'll need those as well for filament loading and unloading
+and working filament gcode for PETG and PLA, since you'll need those as well for filament loading and unloading
 
 The end goal is a configuration bundle for a working printer that others will be able to use.
