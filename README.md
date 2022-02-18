@@ -30,6 +30,7 @@ A couple of caveats:
 
 This is a working configuration for me; I am quite happy with the prints I'm getting with it.  
 It's also not the fastest configuration.  It won't win any Speed Benchy competitions.
+There is a lot of room for improvement with this configuration.
 
 There are two lines in the configuration that are commented out that are necessary for safe operation.  They are the result of the PID tuning you would get after running ```M303```.  I am including them so you know what they look like, but you should use the results you get from running ```M303``` yourself.
 
