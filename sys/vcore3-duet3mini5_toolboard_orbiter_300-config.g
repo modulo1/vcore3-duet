@@ -12,8 +12,10 @@
 ; dragon high-flow hotend
 ; NozzleX 0.4mm
 
-; LIS3DH
-; Neopixel RGB LED strip
+; LIS3DH - planned, config forthcoming. I know the toolboard 1lc but the toolboard
+;  mount I'm using isn't the sturdiest and I was interested in comparing the results 
+; Neopixel RGB LED strip - also planned; not configured here
+;  intention is to use LEDs to indicate heating/ready/cooling status, along with illumination for webcam
 
 ;====;
 ; begin config.g ;
@@ -368,7 +370,7 @@ M404 N1.75 D0.4
 ;;;  R is ignored without S.  S without R uses default resolution.
 ;;;  To find current rate and resolution, send
 ;;;M955 P
-;M955 P121.0 I12 R10
+M955 P121.0 I12 R10
 
 ;; configure MCU temperature as a sensor, this allows it to be shown in the graph along with bed and tool temperature
 ;M308 S10 Y"mcu-temp" A"MCU" ; defines sensor 10 as MCU temperature sensor
