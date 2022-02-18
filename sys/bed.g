@@ -1,4 +1,4 @@
-;;; credit for this goes to Nurglerot from the Rat Rig Discord
+;;; credit for this goes to Nurgelrot from the Rat Rig Discord
 
 M290 R0 S0    ;  clear baby stepping
 M561          ;  reset all bed adjustments
