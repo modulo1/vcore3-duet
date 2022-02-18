@@ -22,6 +22,10 @@ pause.g ✔️
 
 resume.g ✔️
 
+start.g ❌
+
+stop.g ❌
+
 and working filament gcode for PETG and PLA, since you'll need those as well for filament loading and unloading
 
 The end goal is a configuration bundle for a working printer that others will be able to use.
