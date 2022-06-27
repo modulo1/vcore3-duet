@@ -25,8 +25,8 @@ G1 X{global.Bed_Center_X - sensors.probes[0].offsets[0] } Y{global.Bed_Center_Y 
 G30                             ; home Z by probing the bed
 
 ;reset speeds
-M98 P"0:/sys/set_max_speeds.g"
 M913 X100 Y100 Z100 ; set X Y Z motors to 100% of their normal current
+M98 P"0:/sys/set_max_speeds.g"
 
 ; Uncomment the following lines to lift Z after probing
 G91                    ; relative positioning
