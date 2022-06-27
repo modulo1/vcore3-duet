@@ -33,4 +33,5 @@ G1 H2 Z5 F100      ; lift Z relative to current position
 G90                ; absolute positioning
 
 ;reset speeds
+M913 X100 Y100 Z100 ; set X Y Z motors to 100% of their normal current
 M98 P"0:/sys/set_max_speeds.g"
