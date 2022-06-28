@@ -1,12 +1,20 @@
-;; Set retraction settings for PLA filament
-;;; Snnn = positive length to retract, in mm
-;;; Fnnn = retraction feedrate, in mm/min
-;;; Znnn = additional zlift/hop // using ventermech leadscrew decouplers, your Znnn may be different, or unecessary
-M207 S1.0 F7200 Z0.3 
+; Used to set parameters for filament such as retracts, temperatures etc
+M291 P"loading config.g for PLA" R"Loading config" S1 T2
+M302 S185 R90 ; set cold extrude and retract temperatures
+set global.BedPreheatTemp=60 ; set be preheat variable
 
-;; set pressure advance for PLA filament
-;;; you can set this value here, or in the slicer
-;;; i've found that PA value is pretty consistent across filament types
-;;; this is especially true if you're getting your filament from the same mfr.
-;;; changing it can be done easily from within DWC
-M572 D0 S0.12
+
+;M592 D0:1 A0.012 B0 ; Set non linear extrusion
+;;; Pressure Advance
+;;; DragonHF
+;M572 D0 S0.12
+;;; DragonSF
+M572 D0 S0.04
+
+M207 S1.5 F7200  Z0.2	; Set retraction
+
+;;; PID tuning command
+;M303 H1 S215 F0.4
+;;; PID tuning
+;M307 H1 R2.654 K0.471:0.000 D6.51 E1.35 S1.00 B0 V24.0
+M307 H1 R2.618 K0.633:0.000 D5.24 E1.35 S1.00 B0 V24.0
