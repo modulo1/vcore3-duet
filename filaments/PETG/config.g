@@ -1,6 +1,6 @@
 ; Used to set parameters for filament such as retracts, temperatures etc
 M291 P"loading config.g for PET" R"Loading config" S1 T2
-M302 S200 R120 ; set cold extrude and retract temperatures
+M302 S230 R120 ; set cold extrude and retract temperatures
 set global.BedPreheatTemp=70 ; set be preheat variable
 
 
