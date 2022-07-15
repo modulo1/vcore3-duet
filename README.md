@@ -22,9 +22,9 @@ pause.g ✔️
 
 resume.g ✔️
 
-start.g ❌
+start.g ✔️
 
-stop.g ❌
+stop.g ✔️
 
 and working filament gcode for PETG and PLA, since you'll need those as well for filament loading and unloading
 
