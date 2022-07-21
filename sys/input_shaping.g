@@ -5,5 +5,8 @@
 ;; Lnnn (optional) Minimum acceleration allowed, default 10mm/sec^2. Input shaping will not be applied if it requires the average acceleration to be reduced below this value.
 ;; Hnn:nn... Amplitudes of each impulse except the last, normally below 1.0. Only used with P"custom" parameter.
 ;; Tnn:nn Durations of each impulse except the last. Only used with P"custom" parameter.
-
-;M593 P"zvdd" F38.0 S0.14 L10 H:0.226:0.661:0.940 T13.29
+;
+; Since the input shaping plugin doesn't give you the M593 command it uses, you need to reconstruct it from scratch.
+; So this: Input shaping 'zvd' at 31.0Hz damping factor 0.15, min. acceleration 10.0, impulses 0.381 0.853 with durations (ms) 16.31 16.31
+; Becomes the below
+M593 P"zvd" F31.0 S0.15 L10 H:0.381:0.853 T16.31:16.31
