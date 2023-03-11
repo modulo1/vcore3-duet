@@ -9,4 +9,4 @@
 ; Since the input shaping plugin doesn't give you the M593 command it uses, you need to reconstruct it from scratch.
 ; So this: Input shaping 'zvd' at 31.0Hz damping factor 0.15, min. acceleration 10.0, impulses 0.381 0.853 with durations (ms) 16.31 16.31
 ; Becomes the below
-M593 P"zvd" F31.0 S0.15 L10 H:0.381:0.853 T16.31:16.31
+;M593 P"zvd" F31.0 S0.15 L10 H:0.381:0.853 T16.31:16.31
