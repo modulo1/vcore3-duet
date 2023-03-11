@@ -127,7 +127,7 @@ M106 P1 C"Part Fan" S0 H-1
 ; configuration - tool0
 M308 S1 P"121.temp0" Y"thermistor" T100000 B4725 C7.060000e-8 A"hotend"   
 M950 H1 C"121.out0" T1 
-;M307 H1 B0 S1.00       
+M307 H1 B0 S1.00       
 M563 P0 S"revo" D0 H1 F1 
 G10 P0 X0 Y0 Z0  
 G10 P0 R0 S0  
