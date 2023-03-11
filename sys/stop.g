@@ -16,7 +16,7 @@ if {state.currentTool!=-1} ; check if any tools are active
 		G4 S6 ; wait for popup
 else
 	M291 P"No active tool" R"Check tools" S0 T3
-
+M150 R0 B0 U0 Y0 X1 Q3000000 ; turn LEDs off
 if {!move.axes[0].homed || !move.axes[1].homed || !move.axes[2].homed} ; check if the machine is homed
 	M291 P"Insufficient axis homed.  Cannot raise or park" R"Parking" S0 T3
 
@@ -56,7 +56,10 @@ G29 S2 ; clear bed height map (disables bed compensation)
 
 M98 P"0:/sys/setDefaultProbePoints.g"            ; re-define mesh grid in case it was altered
 
+M150 R0 B0 U0 Y0 X1 Q3000000 ; turn LEDs off
 
+M117 DuetLapse3.completed # Will place the program into standby
+G4 S10
 
 M98 P"0:/macros/songs/itchyscratchy.g" ; play finish tune
 set global.Cancelled = false
