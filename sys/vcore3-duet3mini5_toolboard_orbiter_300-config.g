@@ -1,4 +1,4 @@
-;;;; sacrifical colons. delete or add semicolons to this line and save
+;; sacrifical colons. delete or add semicolons to this line and save
 ;if you're too lazy to type M999
 ; config.g by omtek
 
@@ -7,13 +7,13 @@
 ; duet toolboard 1lc
 ; paneldue 7i
 ; ldo orbiter v2,0 with LDO-36STH20-1004AHG
-; dragon sf hotend
+; e3d revo voron hotend
 
 ;====;
 ; begin config.g ;
 
-if (state.atxPower!=true) ; if this is a cold start, we leave the ATX switch off.  Otherwise leave as is.
-	M81 C"pson" ; define the pson pin as power control and set to off by default
+;if (state.atxPower!=true) ; if this is a cold start, we leave the ATX switch off.  Otherwise leave as is.
+;	M81 C"pson" ; define the pson pin as power control and set to off by default
 
 ; Global variable to run/not run daemon.g - checked in daemon.g and abort if false
 if !exists(global.RunDaemon)
@@ -46,6 +46,7 @@ if !exists(global.filamentRetractSpeed)
 	global filamentRetractSpeed = 1800 ; global to set the retract speed used in filament changes - adjusted per filament in filament config.c 
 else
 	set global.filamentRetractSpeed = 1800
+	
 ; configuration - initial networking setup ;
 ;; we want http (web interface); we don't need ftp or telnet
 ;; enable http
@@ -66,7 +67,6 @@ G4 S1
 ;;; S1 = PanelDue mode /w checkum req'd 
 ;;; B115200 = baud 115200
 M575 P1 S1 B115200
-;M575 P1 S1 B57600
 
 ; configuration - printer ;
 ;; here we tell the duet board a little about our printer
@@ -121,6 +121,7 @@ M584 X0.3 Y0.4 Z0.0:0.1:0.2 E121.0
 ;; configure microstepping
 ;;; I1 = interpolation enabled
 M350 X16 Y16 Z16 I1                                                         
+;M350 X64 Y64 Z64 I0                                                         
 
 ; configuration - motor travel (steps/mm, current, idle timeout) ;
 ;; set steps/mm
@@ -128,7 +129,7 @@ M92 X80.00 Y80.00 Z800.00
 ;; set motor currents (in mA) 
 ;;  will always be at least 100mA
 ;;; I30 = motor idle factor in percent (30%)                                                 
-M906 X1500 Y1500 Z1000 I30                                                   
+M906 X1600 Y1600 Z1600 I30                                                   
 ;; Set idle timeout
 ;;;  S30 = 30s																		                                      
 M84 S30                                                                     
@@ -172,7 +173,8 @@ M208 X310 Y300 Z300 S0
 ;; to eliminate CAN bus latency during homing moves
 ;; and allow future installation of filament sensor
 ;;; configure active high (S1) X endstop at X- (X1) on duet.io3.in (0.io3.in)
-M574 X1 S1 P"0.io3.in"   
+;M574 X1 S1 P"0.io3.in"   
+M574 X1 S1 P"121.io0.in"   
 ;;; configure Y active high (S1) endstop at Y+ (Y2) on duet.io2.in (0.io2.in)                                                   
 M574 Y2 S1 P"0.io2.in"   
 ;;; configure Z-probe (S2) endstop at low end (Z1)                                                 
@@ -182,8 +184,6 @@ M574 Z1 S2
 ;; define positions of Z leadscrews
 ;;; S5 = maximum correction allowed for each leadscrew in mm
 M671 X-4.5:150:304.5 Y-4.52:305:-4.52 S5
-;; define 10x10 mesh grid with point spacing (P10)                                   
-M557 X20:280 Y20:280 P10                                                     
 																			                                      
 ; configuration - extruder and bed heaters/thermistors ;
 
@@ -200,7 +200,7 @@ M308 S0 P"0.temp0" Y"thermistor" T100000 B3950 A"bed"
 ;;; create heater output (H0) for bed
 ;;; on duet.out0 (0.out0) and 
 ;;; map to sensor 10 (T0)
-M950 H0 C"0.out0" T0
+M950 H0 C"0.out0" T0 Q11
 ;;; on bed (H0)
 ;;; B0 = disable bang-bang mode   
 ;;; and set PWM limit (S1.00)                                                  
@@ -209,7 +209,7 @@ M307 H0 B0 S1.00
 M140 H0
 ;;; set temperature limit for 
 ;;;  heater 0 (H0) to 110C
-M143 H0 S110
+M143 H0 S120
 
 ;;; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ;;
 ;;; run bed PID tune!! using code below 
@@ -223,39 +223,26 @@ M143 H0 S110
 ;;;  if you're using a mains (AC) bed heater on your bed, omit it
 ;;; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ;;
 ;;; this is my M307, find your own
-;M307 H0 B0 R0.487 C383.6 D2.05 S1.00
-M307 H0 B0 R0.503 C377.6 D1.95 S1.00
+M307 H0 R0.481 K0.479:0.000 D1.84 E1.35 S1.00 B0
 
 ;;; duet may complain that heater 0 (H0) may reach unsafe temperature
 ;;; this should be ok to ignore as we limit bed temp with M143 above
 ;;; as always do not print unattended
 
-; configuration - hotend and part fan ;
+; configuration - part fan ;
 
 ;; duet pins start with 0. ;;
 ;; toolboard 1lc pins start with 121. ;;
 
-;;; create fan 0 (F0) 
-;;; on pin toolboard.out2 (121.out2) 
-;;; Q = set PWM frequency in Hz. valid range: 0-65535
-;;;  default: 500 for GpOut pins, 250 for fans and heaters   
-M950 F0 C"121.out2" Q250 
-;;; set fan 0 (P0) to
-;;; C = custom name hotend fan
-;;; S = fan speed, initial value
-;;; H = thermostatic control turned on for hotend fan
-;;; T = trigger temperature in celcius; integer or range (T45= 45C) 
-;;; L = minimum fan speed (L255 = full speed)                                                  
-M106 P0 C"hotend fan" S0 H1 T45 L255   
 ;;; create fan 1 (F1) on pin toolboard.out1 (121.out1)
 ;;; Q = set PWM frequency in Hz. valid range: 0-65535
 ;;;  default: 500 for GpOut pins, 250 for fans and heaters                                   
-M950 F1 C"121.out1" Q250  
 ;;; set fan 1 (P1)
 ;;; C = custom name to layer fan 
 ;;; S = fan speed, initial value
 ;;; H = thermostatic control is turned off (H-1)        
-M106 P1 C"layer fan" S0 H-1                                                 
+M950 F1 C"!0.out4+0.out4.tach"
+M106 P1 C"Part Fan" S0 H-1                                                 
 
 ; configuration - tool0
 
@@ -263,34 +250,6 @@ M106 P1 C"layer fan" S0 H-1
 ;; toolboard 1lc pins start with 121. ;;
 
 ;; define tool 0
-;; here we assign fans, extruder drives, heaters to a tool definition
-;;; P = tool number (P0 = first tool)
-;;; S"name" =  tool name (optional)
-;;; D =  extruder drive
-;;;  we have a single extruder defined above hence (D0)
-;;; H = heater H1 is defined above
-;;; F = fan(s) to map fan 1
-M563 P0 S"dragonHF" D0 H1 F1 
-;; set tool 0 axis offsets 
-;;; P = tool number                                                           
-G10 P0 X0 Y0 Z0  
-;; set initial tool 0 (P0) temperatures
-;;; R = standby temperatures in C    
-;;; S = active temperature in C                                                      
-G10 P0 R0 S0  
-;;; create heater output (H1) for hotend
-;;; on toolboard.out0 (121.out0) and 
-;;; map to sensor 1 (T1)
-M950 H1 C"121.out0" T1 
-;;; on hotend (H1)
-;;; B0 = disable bang-bang mode   
-;;; and set PWM limit (S1.00)                                                  
-M307 H1 B0 S1.00                                                           
-;; set the maximum temperature in C for 
-;;; H = heater 1, or hotend 
-;;; S = max temperature (280C)																			                                     
-M143 H1 S280     
-
 ;; configuration - hotend thermistor
 ;;; configure sensor 1 (S1) on 
 ;;; pin toolboard.temp0 (121.temp0) as thermistor (Y) 
@@ -299,6 +258,35 @@ M143 H1 S280
 ;;; C = steinhart-hart c coefficient
 ;;; A = named hotend
 M308 S1 P"121.temp0" Y"thermistor" T100000 B4725 C7.060000e-8 A"hotend"   
+
+
+;;; create heater output (H1) for hotend
+;;; on toolboard.out0 (121.out0) and 
+;;; map to sensor 1 (T1)
+M950 H1 C"121.out0" T1 
+;;; on hotend (H1)
+;;; B0 = disable bang-bang mode   
+;;; and set PWM limit (S1.00)                                                  
+M307 H1 B0 S1.00       
+;; here we assign fans, extruder drives, heaters to a tool definition
+;;; P = tool number (P0 = first tool)
+;;; S"name" =  tool name (optional)
+;;; D =  extruder drive
+;;;  we have a single extruder defined above hence (D0)
+;;; H = heater H1 is defined above
+;;; F = fan(s) to map fan 1
+M563 P0 S"revo" D0 H1 F1 
+;; set tool 0 axis offsets 
+;;; P = tool number                                                           
+G10 P0 X0 Y0 Z0  
+;; set initial tool 0 (P0) temperatures
+;;; R = standby temperatures in C    
+;;; S = active temperature in C                                                      
+G10 P0 R0 S0  
+;; set the maximum temperature in C for 
+;;; H = heater 1, or hotend 
+;;; S = max temperature (280C)																			                                     
+M143 H1 S280     
 
 ;;; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ;;
 ;;; run hotend PID tune!! using code below 
@@ -310,9 +298,22 @@ M308 S1 P"121.temp0" Y"thermistor" T100000 B4725 C7.060000e-8 A"hotend"
 ;;;
 ;;; replace M307 below with results from M303
 ;;; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ;;
-;;; this is my new M307, using dual 5015 fans, Dragon SF hotend, 0.4mm brass nozzle (fast-change setup)
+;;; this is my new M307, using 4028 fans, E3D Revo hotend, 0.4mm brass nozzle
 M307 H1 R2.788 K0.501:0.000 D6.52 E1.35 S1.00 B0 V24.0
 
+; configure hotend fan
+;;; create fan 0 (F0) 
+;;; on pin toolboard.out2 (121.out2) 
+;;; Q = set PWM frequency in Hz. valid range: 0-65535
+;;;  default: 500 for GpOut pins, 250 for fans and heaters   
+M950 F0 C"121.out2" Q250 
+;;; set fan 0 (P0) to
+;;; C = custom name hotend fan
+;;; S = fan speed, initial value
+;;; H = thermostatic control turned on for hotend fan
+;;; T = trigger temperature in celcius; integer or range (T45= 45C) 
+;;; L = minimum fan speed (L255 = full speed)                                                  
+M106 P0 C"Tool Fan" S0 H1 T45 L255   
 ; configuration - extruder
 ;; LDO Orbiter v2.0
 ;; we define E-axis seperately here to make future extruder changes easier.
@@ -322,8 +323,8 @@ M307 H1 R2.788 K0.501:0.000 D6.52 E1.35 S1.00 B0 V24.0
 M350 E16 I1		
 ;;; set extruder steps per mm, 0.9 angle/step
 ;;;  (LDO-36STH20-1004AHG with Orbiter v1.5)														    
-;;M92 E690	
-M92 E683.76
+;M92 E690	
+M92 E673.06
 ;;; max speed mm/min (E3600 or E7200)                                                       	    
 M203 E7200  
 ;;; instantaneous speed change mm/min                                                     	    
@@ -336,28 +337,26 @@ M906 E1200 I10
 ;; firmware retraction settings
 ;;; S1.5 = length in mm, feed F3600 or F7200,  
 ;;; Z = z-hop
-;;;  consider moving this to filament gcode, if possible                                                                      	     
+;;;  moving this to filament gcode                                                                      	     
 ;M207 S0.2 F7200 Z0.2                                                   	   
 
-;; filament monitor - duet magnetic filament monitor
-;M591 D0 P3 C"121.io1.in" R90:115 S0 A0 L25.60 E3
-;; filament monitor - orbiter filament sensor v2.0
-M950 J1 C"^121.io1.in"
-M581 P1 T2 S0 R0
+;; filament monitors
+;M98 P"0:/sys/filament_monitor.g"
 
-M950 J2 C"^121.io3.in"
-M581 P2 T3 S0 R0
 ; configuration - z-probe ;
-
 ;; duet pins start with 0. ;;
 ;; toolboard 1lc pins start with 121. ;;
 
 ;; Inductive Probe (ezabl, pinda, superpinda, euclid)
 ;; SuperPINDA installed on 121.io2
-; set Z probe type to unmodulated and the dive height + speeds
-M558 P8 C"121.io2.in"  H1.4 F1000:120 T6000 A20 S0.005		
+; set Z probe type to unmodulated and the dive height + speeds	
+;M558 P8 C"121.io2.in"  H1.5 F600:120 T18000 A20 S0.005 B1		
+M558 P8 C"121.io2.in"  H1.5 F600:120 T12000 A20 B1		
 ; set Z probe trigger value, offset and trigger height, more Z means closer to the bed			    
-G31 K0 P500 X-27.8 Y-12.0 Z0.565
+;G31 K0 P500 X-30 Y-15 Z1.4
+M98 P"0:/sys/build_plate.g"
+;; define 10x10 mesh grid with point spacing (P10)                                   
+;M557 X5:290 Y5:280 S14
 M98 P"0:/sys/setDefaultProbePoints.g"
 
 ;Calculate bed centre
@@ -366,31 +365,13 @@ if !exists(global.Bed_Center_X)
 if !exists(global.Bed_Center_Y)
 	global Bed_Center_Y = floor(move.axes[1].max  / 2)
 	
-;; BLTouch connected to toolboard.io0
-;;; Create a servo pin (S0) on toolboard.io0.out (121.io0.out)
-;M950 S0 C"121.io0.out"  
-;;; set Z probe type to BLTouch (P9)
-;;;  on toolboard.io0.in (121.io0.in)                                        	    
-;;;  H5 = dive height 
-;;;  speed (F100) and travel (T2000) 
-;;;  A5 = probe point max 
-;M558 P9 C"121.io0.in" H5 F100 T2000 A5    
-;;; P25 = set Z probe trigger value
-;;;  offset (X-28.00,Y-13.00) 
-;;; Z2.00 = trigger height
-;;;  more Z means closer to the bed                            	    
-;G31 P25 X-28.00 Y-13.00 Z2.45 
-;;; mr krabs duct
-;G31 P25 X-37.50 Y-13.00 Z2.57
 ; configuration - pressure advance
 ;;; N1.75 = filament width (mm)
 ;;; D0.4 = nozzle diameter (mm)
-M404 N1.75 D0.4  
-;; select tool0                                                           
-T0
+;M404 N1.75 D0.4  
+
 ;;; pull in config-override.g settings
 M501
-
 
 ; configuration - accelerometer
 
@@ -408,18 +389,25 @@ M501
 ;;;  R is ignored without S.  S without R uses default resolution.
 ;;;  To find current rate and resolution, send
 ;;;M955 P
-;M955 P121.0 I12 R10
 M955 P121.0 I54 R10
+
 
 ;; pull input_shaping.g
 M98 P"0:/sys/input_shaping.g"
+
+;setup Duet 3 Mini 5+ MCU temperature
 M308 S10 Y"mcu-temp" A"MCU" ; defines sensor 10 as MCU temperature sensor
-M308 S11 Y"drivers" A"Duet stepper drivers" ; defines sensor 11 as stepper driver temperature sensor
-M912 P0 S-1.2
+M950 F2 C"0.out5" Q100 ; create fan 2 on pin fan2 and set its frequency
+M106 P2 H3 T40:70 ; set fan 2 value
+;M308 S11 Y"drivers" A"Duet stepper drivers" ; defines sensor 11 as stepper driver temperature sensor
+
+M912 P0 S-1.2 ; duet mcu temperature offset
 
 T0 ; select tool
+
 M568 P0 R0 S0 A0 ; turn off heater on tool zero
 M140 S-273.1 ; turn off bed
+
 ; Global Variables for heater checking routine in daemon.g
 ;if !exists(global.HeaterCheckInterval)
 ;	global HeaterCheckInterval=6 ; variable for use in daemon.g sets interval of heater checks
@@ -430,16 +418,16 @@ M140 S-273.1 ; turn off bed
 ;	if iterations > 10000 ; if it takes more than 10 seconds we have a problem with the thermistor
 ;		M118 P0 L1 S"Thermistor failed to stabilize in less than 10 seconds"
 ;		break
-echo "sensor stable time: " ^ state.upTime ^ "." ^ state.msUpTime
-if !exists(global.LastTemp) || global.LastTemp=null
-	global LastTemp=heat.heaters[1].current ; Set variable to current extruder temp.
-else
-	set global.LastTemp=heat.heaters[1].current ; Set variable to current extruder temp.
+;echo "sensor stable time: " ^ state.upTime ^ "." ^ state.msUpTime
+;if !exists(global.LastTemp) || global.LastTemp=null
+;	global LastTemp=heat.heaters[1].current ; Set variable to current extruder temp.
+;else
+;	set global.LastTemp=heat.heaters[1].current ; Set variable to current extruder temp.
 G4 P10
-if !exists(global.LastCheckTime)
-	global LastCheckTime=0 ; variable for use in daemon.g 
-else
-	set global.LastCheckTime=0 ; variable for use in daemon.g
+;if !exists(global.LastCheckTime)
+;	global LastCheckTime=0 ; variable for use in daemon.g 
+;else
+;	set global.LastCheckTime=0 ; variable for use in daemon.g
 if !exists(global.BedPreheatTemp)
 	global BedPreheatTemp=0 ; variable for use in preheating 
 else
@@ -457,16 +445,11 @@ else
 	echo "Loading config for " ^ global.LoadedFilament ^ " filament"
 	M703 ; if a filament is loaded, set all the heats and speeds for it by loading config.g
 G4 P10
-M98 P"0:/sys/setDefaultProbePoints.g"
 ; Custom settings
 ; Power failure recovery
 M911 S23.2 R23.6 P"M42P5S0 M568P0A0 M913X0Y0 G91 M203 Z3600 M83 G1Z6F3600 G1E-3F3000" ; If power drops below 23.2v then turn off fans, Set X & Y current to zero, raise head, retract.
 ;play startup tune
-G4 S8					; Allow time for PanelDue to start & wifi connection etc
+;G4 S8					; Allow time for PanelDue to start & wifi connection etc
+;M501 ; load config-overide.g
+;M568 P0 R0 S0 A0 ; set heater on T0 to off
 M98 P"0:/macros/songs/itchyscratchy.g"								; Play tune
-M501 ; load config-overide.g
-; configure accelerometer
-M568 P0 R0 S0 A0 ; set heater on T0 to off
-if (heat.heaters[1].current > fans[1].thermostatic.lowTemperature) && (state.atxPower!=true) ; check if the hotend is hot
-	M291 R"Hotend warning"  P"Hotend > " ^ fans[1].thermostatic.lowTemperature ^ " degrees - OK to turn on ATX and cooling fan" S3
-	M80
