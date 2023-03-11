@@ -11,13 +11,25 @@ M201 X400.00 Y400.00 Z60.00 E120.00                        ; set accelerations (
 
 G91                             ; relative positioning
 G1 H2 Z5 F6000                  ; lift Z relative to current position
-G1 H1 X-625 Y605 F3600          ; move quickly to X and U axis endstops and stop there (first pass)
-G1 H1 X-625 F1800               ; move quickly to X and U axis endstops and stop there (first pass)
-G1 H1 Y605 F1800                ; move quickly to X and U axis endstops and stop there (first pass)
-G1 H2 X5 Y-5 F600              ; go back a few mm
-G1 H1 X-625 Y605 F360           ; move slowly to X and U axis endstops once more (second pass)
-G1 H1 X-625 F360                ; move slowly to X and U axis endstops once more (second pass)
-G1 H1 Y605 F360                 ; move slowly to X and U axis endstops once more (second pass)
+G1 H1 X-625 Y605 F3600          ; move quickly to X and Y axis endstops and stop there (first pass)
+G1 H1 X-625 F1800               
+G1 H1 Y605 F1800                
+G1 H2 X5 Y-5 F600               ; go back a few mm
+G1 H1 X-625 Y605 F360           ; move slowly to X and Y axis endstops once more (second pass)
+G1 H1 X-625 F360                
+G1 H1 Y605 F360                 
+
+;ERCF Selector Homing
+M705
+if global.ercf_selector_loaded == 0
+	G1 H1 V-150 F1000
+	G1 V5
+	G1 H1 V-10 F150
+	G1 V{global.ercf_selector_offset}
+	G92 V0
+else
+	echo "Error, retract filament from selector before homing"
+
 
 G90                             ; absolute positioning
 G1 X150 Y150 F10000             ; go to first probe point
@@ -32,3 +44,4 @@ M98 P"0:/sys/set_max_speeds.g"
 G91                    ; relative positioning
 G1 H2 Z5 F120          ; lift Z relative to current position
 G90                    ; absolute positioning
+
