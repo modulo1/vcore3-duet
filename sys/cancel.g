@@ -1,6 +1,5 @@
 ;CANCEL.G  Run when print is cancelled or M1 called
 ; called when a print is cancelled after a pause.
-
 echo "cancel.g called"
 set global.Cancelled = true
 
@@ -37,6 +36,8 @@ G90 ; absolute positioning
 G4 S1 ; wait for moves to finish
 M84 ; steppers off
 M98 P"0:/sys/setDefaultProbePoints.g"
+M150 R0 B0 U0 Y0 X1 Q3000000 ; turn LEDs off
+G29 S2
 M291 P"Print cancelled" R"Cancelled" S0 T2
 M98 P"0:/macros/songs/itchyscratchy.g" ; play finish tune
 set global.Cancelled = false
