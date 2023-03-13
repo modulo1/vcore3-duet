@@ -14,7 +14,7 @@ G1 H2 Z5 F6000                  ; lift Z relative to current position
 G1 H1 X-625 Y605 F3600          ; move quickly to X and Y axis endstops and stop there (first pass)
 G1 H1 X-625 F1800               
 G1 H1 Y605 F1800                
-G1 H2 X5 Y-5 F600               ; go back a few mm
+G1 X5 Y-5 F600               ; go back a few mm
 G1 H1 X-625 Y605 F360           ; move slowly to X and Y axis endstops once more (second pass)
 G1 H1 X-625 F360                
 G1 H1 Y605 F360                 
