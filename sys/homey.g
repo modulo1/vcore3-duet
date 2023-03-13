@@ -19,7 +19,7 @@ G1 H1 Y605 F1800					; move quickly to Y axis endstop and stop there (first pass
 if result != 0
 	abort "Error during fast homing Y axis - process cancelled"
 	
-G1 H2 Y-10 F6000						; go back a few mm
+G1 Y-10 F6000						; go back a few mm
 
 G1 H1 Y605 F360					; move slowly to Y axis endstop once more (second pass)
 if result != 0
