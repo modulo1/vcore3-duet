@@ -20,7 +20,7 @@ G1 H1 X-625 F1800					; move quickly to X axis endstop and stop there (first pas
 if result != 0
 	abort "Error during fast homing X axis - process cancelled"
 	
-G1 H2 X5 F6000						; go back a few mm
+G1 X5 F6000						; go back a few mm
 
 G1 H1 X-625 F360					; move slowly to X axis endstop once more (second pass)
 if result != 0
