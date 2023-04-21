@@ -174,7 +174,7 @@ M208 X310 Y300 Z300 S0
 ;; and allow future installation of filament sensor
 ;;; configure active high (S1) X endstop at X- (X1) on duet.io3.in (0.io3.in)
 ;M574 X1 S1 P"0.io3.in"   
-M574 X1 S1 P"121.io0.in"   
+M574 X1 S1 P"121.io2.in"   
 ;;; configure Y active high (S1) endstop at Y+ (Y2) on duet.io2.in (0.io2.in)                                                   
 M574 Y2 S1 P"0.io2.in"   
 ;;; configure Z-probe (S2) endstop at low end (Z1)                                                 
@@ -314,6 +314,7 @@ M950 F0 C"121.out2" Q250
 ;;; T = trigger temperature in celcius; integer or range (T45= 45C) 
 ;;; L = minimum fan speed (L255 = full speed)                                                  
 M106 P0 C"Tool Fan" S0 H1 T45 L255   
+
 ; configuration - extruder
 ;; LDO Orbiter v2.0
 ;; we define E-axis seperately here to make future extruder changes easier.
@@ -333,7 +334,8 @@ M566 E300
 M201 E10000  
 ;;; set extruder motor current (E500 or E1200, in mA)   
 ;;;  and idle factor in per cent (I10 = 10%)                                                           	    
-M906 E1200 I10                                                         	    
+M906 E1200 I10              
+
 ;; firmware retraction settings
 ;;; S1.5 = length in mm, feed F3600 or F7200,  
 ;;; Z = z-hop
@@ -350,10 +352,11 @@ M906 E1200 I10
 ;; Inductive Probe (ezabl, pinda, superpinda, euclid)
 ;; SuperPINDA installed on 121.io2
 ; set Z probe type to unmodulated and the dive height + speeds	
-;M558 P8 C"121.io2.in"  H1.5 F600:120 T18000 A20 S0.005 B1		
-M558 P8 C"121.io2.in"  H1.5 F600:120 T12000 A20 B1		
+;M558 P8 C"121.io2.in"  H1.5 F600:120 T12000 A20 B1		
+;; klicky probe installed on 121.io1
+M558 P8 C"121.io0.in" H5 F300:120 T6000 A20 B0
 ; set Z probe trigger value, offset and trigger height, more Z means closer to the bed			    
-;G31 K0 P500 X-30 Y-15 Z1.4
+;G31 P500 X-30 Y-15 Z1.4
 M98 P"0:/sys/build_plate.g"
 ;; define 10x10 mesh grid with point spacing (P10)                                   
 ;M557 X5:290 Y5:280 S14
@@ -364,11 +367,6 @@ if !exists(global.Bed_Center_X)
 	global Bed_Center_X = floor(move.axes[0].max / 2)
 if !exists(global.Bed_Center_Y)
 	global Bed_Center_Y = floor(move.axes[1].max  / 2)
-	
-; configuration - pressure advance
-;;; N1.75 = filament width (mm)
-;;; D0.4 = nozzle diameter (mm)
-;M404 N1.75 D0.4  
 
 ;;; pull in config-override.g settings
 M501
@@ -390,7 +388,6 @@ M501
 ;;;  To find current rate and resolution, send
 ;;;M955 P
 M955 P121.0 I54 R10
-
 
 ;; pull input_shaping.g
 M98 P"0:/sys/input_shaping.g"
@@ -449,7 +446,4 @@ G4 P10
 ; Power failure recovery
 M911 S23.2 R23.6 P"M42P5S0 M568P0A0 M913X0Y0 G91 M203 Z3600 M83 G1Z6F3600 G1E-3F3000" ; If power drops below 23.2v then turn off fans, Set X & Y current to zero, raise head, retract.
 ;play startup tune
-;G4 S8					; Allow time for PanelDue to start & wifi connection etc
-;M501 ; load config-overide.g
-;M568 P0 R0 S0 A0 ; set heater on T0 to off
 M98 P"0:/macros/songs/itchyscratchy.g"								; Play tune
