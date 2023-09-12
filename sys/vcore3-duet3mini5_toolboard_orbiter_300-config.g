@@ -138,24 +138,6 @@ M84 S30
 ;; we're loading off a macro now
 ;; set all the max speeds in macro as these are adjusted during home moves so we only want to adjust in one spot
 M98 P"0:/sys/set_max_speeds.g" 
-;; set maximum instantaneous speed changes (mm/min)
-;;; P1 =  jerk policy; allows jerk to be applied between any pair of moves 
-;M566 X300.00 Y300.00 Z9.00 P1 
-;M566 X800.00 Y800.00 Z6.00 P1
-;M566 X800.00 Y800.00 Z9.00 P1
-;; set maximum speeds (mm/min)                                              
-;M203 X9000.00 Y9000.00 Z300.00 
-;M203 X24000.00 Y24000.00 Z1200.00 
-;M203 X24000.00 Y24000.00 Z300.00
-;M203 X18000.00 Y18000.00 Z300.00
-;; set accelerations (mm/s^2)                                          
-;M201 X500.00 Y500.00 Z200.00                                              
-;M201 X600.00 Y600.00 Z150.00                                              
-;M201 X2500.00 Y2500.00 Z200.00  
-;M201 X2000.00 Y2000.00 Z300.00
-
-;; set printing and travel accelerations
-;M204 P300 T2000
 
 ; configuration - axis min/max ;
 ;;  our printer is 300mm^3 volume 
@@ -223,7 +205,8 @@ M143 H0 S120
 ;;;  if you're using a mains (AC) bed heater on your bed, omit it
 ;;; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ;;
 ;;; this is my M307, find your own
-M307 H0 R0.481 K0.479:0.000 D1.84 E1.35 S1.00 B0
+;M307 H0 R0.481 K0.479:0.000 D1.84 E1.35 S1.00 B0
+M307 H0 R0.492 K0.279:0.000 D2.01 E1.35 S1.00 B0
 
 ;;; duet may complain that heater 0 (H0) may reach unsafe temperature
 ;;; this should be ok to ignore as we limit bed temp with M143 above
@@ -325,7 +308,10 @@ M350 E16 I1
 ;;; set extruder steps per mm, 0.9 angle/step
 ;;;  (LDO-36STH20-1004AHG with Orbiter v1.5)														    
 ;M92 E690	
-M92 E673.06
+;; orbiter v2.0
+;M92 E673.06
+;; Vz-HextrudORT
+M92 E900
 ;;; max speed mm/min (E3600 or E7200)                                                       	    
 M203 E7200  
 ;;; instantaneous speed change mm/min                                                     	    
@@ -334,8 +320,10 @@ M566 E300
 M201 E10000  
 ;;; set extruder motor current (E500 or E1200, in mA)   
 ;;;  and idle factor in per cent (I10 = 10%)                                                           	    
-M906 E1200 I10              
-
+;; orbiter v2.0
+;M906 E1200 I10              
+;; Vz-HextrudORT
+M906 E800 I10
 ;; firmware retraction settings
 ;;; S1.5 = length in mm, feed F3600 or F7200,  
 ;;; Z = z-hop
@@ -388,6 +376,8 @@ M501
 ;;;  To find current rate and resolution, send
 ;;;M955 P
 M955 P121.0 I54 R10
+;M955 P121.0 I12 R10
+
 
 ;; pull input_shaping.g
 M98 P"0:/sys/input_shaping.g"
