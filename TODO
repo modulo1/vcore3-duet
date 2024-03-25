@@ -1,0 +1,4 @@
+* parameterize... everything.
+** start with bed.g
+*** move leadscrew probe positions into an array, load with sys/init.g
+*** change bed.g three leadscrew probe positons to draw from variables.
