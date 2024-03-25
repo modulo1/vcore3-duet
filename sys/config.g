@@ -34,15 +34,15 @@
 ;=== sensor colors as defined by Snnn ===;
 ; S0 = blue (bed)
 ; S1 = red (hotend)
-; S2 = deep orange 
+; S2 = deep orange (temp)
 ; S4 = teal 
-; S5 = yellow (chamber temp)
+; S5 = yellow (mcu)
 ; S6 = purple
 ; S7 = black
-; S8 = lime (chamber humidity)
+; S8 = lime
 ; S9 = grey
 ; S10 = orange
-; S11 = green (MCU temp)
+; S11 = green
 ; S12 = red???
 ; S13 = blue???
 ; S14 = light grey
@@ -155,8 +155,7 @@ M308 S8 P"S5.1" Y"dht-humidity" A"Humidity[%]"
 M308 S11 Y"mcu-temp" A"MCU"                               ;; MCU temperature, with offset
 M912 P0 S-1.2
 
-;=== configuration - LEDs, chamber & toolhead ===;
-M950 E0 C"20.rgbled" T2 U2 Q3000000                                 ;; configure toolhead LED E0 on FLY36.rgbled (20.rgbled)
+;=== configuration - LEDs, chamber ===;
 M950 P0 C"0.out5" Q1000                                   ;; configure Dayspring LEDs P0 on duet.out5 (0.out5)
 
 ;=== configuration - overrides ===;
@@ -164,8 +163,7 @@ M950 P0 C"0.out5" Q1000                                   ;; configure Dayspring
 
 ;=== configuration - gizmo0 ===;
 M98 P"0:/sys/gizmo0.g"
-;M98 P"0:/sys/setFilamentMonitor.g"                       ;; filament monitor
-M98 P"0:/sys/setInputShaping.g"                           ;; input shaping parameters
+;; housekeeping
 M568 P0 R0 S0 A0                                          ;; turn tool0 heater off
 M140 S-273.1                                              ;; turn bed off
 T0 P0                                                     ;; select T0, don't run any toolchange macros
