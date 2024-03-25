@@ -1,35 +1,45 @@
-M290 R0 S0    ;  clear baby stepping
-M561          ;  reset all bed adjustments
-M400          ;  flush move queue
+; bed.g
+; called to perform automatic bed compensation via G32
 
-if !move.axes[0].homed or !move.axes[1].homed or !move.axes[2].homed
-  echo "not all axes homed, homing axes first"
+M290 R0 S0                                                                                 ;; clear baby stepping
+M561                                                                                       ;; reset all bed adjustments
+M400                                                                                       ;; flush move queue
+
+
+if !move.axes[0].homed 
+  echo "not all axes homed, homing axes first"                                             ;; Home XYZ, if not already
   G28
-  if result != 0
-		abort "Print cancelled due to homing error"
- 
-while true
-  if iterations = 10
-    abort "Auto calibration repeated attempts ended, final deviation", move.calibration.final.deviation ^ "mm"
-  G30 P0 X5 Y5 Z-99999 ; probe near a leadscrew
-  if result != 0
-    continue
-  G30 P1 X150 Y285 Z-99999 ; probe near a leadscrew
-  if result != 0
-    continue
-  G30 P2 X270 Y5 Z-99999 S3 ; probe near a leadscrew and calibrate 3 motors
-  ;G30 P2 X270 Y30 Z-99999 S3 ; probe near a leadscrew and calibrate 3 motors
-  if result != 0
-    continue
-  if move.calibration.initial.deviation <= 0.01
-    break
-  echo "Repeating calibration because deviation is too high (" ^ move.calibration.initial.deviation ^ "mm)"
-; end loop
-echo "Auto calibration successful, deviation", move.calibration.final.deviation ^ "mm"
 
-;G0 X150 Y150 F10000
+M401
+
+;=== probe sanity check commands ===;
+;; G1 X{ 20 - sensors.probes[0].offsets[0] }  Y{ 20 - sensors.probes[0].offsets[1] }
+;; G1 X{ 170 - sensors.probes[0].offsets[0] }  Y{ 275 - sensors.probes[0].offsets[1] }
+;; G1 X{ 280 - sensors.probes[0].offsets[0] }  Y{ 40 - sensors.probes[0].offsets[1] }
+
+
+;=== rough pass estimate, can skip ===;
+G30 P0 X20 Y20 Z-99999          ; probe near a leadscrew
+G30 P1 X170 Y275 Z-99999        ; probe near a leadscrew
+G30 P2 X280 Y40 Z-99999 S3      ; probe near a leadscrew and calibrate 3 motors
+echo "Current rough pass deviation: " ^ move.calibration.initial.deviation
+
+while move.calibration.initial.deviation > 0.005
+    if iterations >= 10
+        echo "Error: Max attempts failed. Deviation: " ^ move.calibration.initial.deviation
+        break
+    echo "Deviation over threshold. Executing pass" , iterations+1, "deviation", move.calibration.initial.deviation
+    G30 P0 X20 Y20 Z-99999 ; probe near a leadscrew
+    G30 P1 X170 Y275 Z-99999 ; probe near a leadscrew
+    G30 P2 X280 Y40 Z-99999 S3 ; probe near a leadscrew and calibrate 3 motors
+        echo "Current deviation: " ^ move.calibration.initial.deviation 
+        continue
+echo "Final deviation: " ^ move.calibration.initial.deviation
+
+G0 X150 Y150 F10000
 ;G1 X{global.Bed_Center_X - sensors.probes[0].offsets[0] } Y{global.Bed_Center_Y - sensors.probes[0].offsets[1]} F12000
 
 ; rehome Z as the absolute height of the z plane may have shifted
 G28 Z
-;G29 S1
+
+M402
