@@ -32,20 +32,20 @@
 ;; S11 = MCU temperature (0.mcu-temp)
 
 ;=== sensor colors as defined by Snnn ===;
-; S0 = blue (bed)
-; S1 = red (hotend)
-; S2 = deep orange (temp)
-; S4 = teal 
-; S5 = yellow (mcu)
-; S6 = purple
-; S7 = black
-; S8 = lime
-; S9 = grey
-; S10 = orange
-; S11 = green
-; S12 = red???
-; S13 = blue???
-; S14 = light grey
+;; S0 = blue (bed)
+;; S1 = red (hotend)
+;; S2 = deep orange (temp)
+;; S4 = teal 
+;; S5 = yellow (mcu)
+;; S6 = purple
+;; S7 = black
+;; S8 = lime
+;; S9 = grey
+;; S10 = orange
+;; S11 = green
+;; S12 = red???
+;; S13 = blue???
+;; S14 = light grey
 
 ;=== pin names created with M950 ===;
 ;; E0 = toolhead LED (20.rgbled)
