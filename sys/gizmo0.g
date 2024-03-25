@@ -38,3 +38,7 @@ M92 E900                                                                      ;;
 M203 E7200                                                                    ;; set max speed, jerk, acceleration
 M205 E5.0
 M201 E10000
+
+;=== gizmo0 - options ===;
+;M98 P"0:/sys/setFilamentMonitor.g"                       ;; filament monitor
+;M98 P"0:/sys/setInputShaping.g"                          ;; input shaping parameters
