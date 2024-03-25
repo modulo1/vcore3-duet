@@ -40,5 +40,6 @@ M205 E5.0
 M201 E10000
 
 ;=== gizmo0 - options ===;
+M950 E0 C"20.rgbled" T2 U2 Q3000000                       ;; configure toolhead LED E0 on FLY36.rgbled (20.rgbled)
 ;M98 P"0:/sys/setFilamentMonitor.g"                       ;; filament monitor
 ;M98 P"0:/sys/setInputShaping.g"                          ;; input shaping parameters
