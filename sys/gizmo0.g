@@ -1,4 +1,4 @@
-;; gizmoN.g is the comprehensive definition of a tool (extruder, hotend, heater, thermisistor, tool and part cooling fans)
+;; gizmoN.g is the comprehensive definition of a tool (extruder, hotend, heater, thermisistor, filament monitoring, input shaping, tool and part cooling fans)
 ;; includes hotend (thermistor, heater), fan (tool, part), extruder (axis, microstepping), tool assignment and offset
 
 ;=== gizmo0 - fan ===;
