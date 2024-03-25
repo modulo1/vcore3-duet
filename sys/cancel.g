@@ -1,20 +1,31 @@
-;CANCEL.G  Run when print is cancelled or M1 called
-; called when a print is cancelled after a pause.
-echo "cancel.g called"
+; stop.g
+; called when M0 (Stop) is run (e.g. when a print from SD card is cancelled)
+;
+;
+;M929 P"0:/sys/stoplog.txt" S3 ; start logging to file eventlog.txt
 set global.Cancelled = true
 
-if heat.heaters[1].current > heat.coldRetractTemperature
-	G10 ; retract the filament a bit before lifting the nozzle to release some of the pressure
+if {state.currentTool!=-1} ; check if any tools are active
+	if #tools[state.currentTool].heaters > 0 & heat.heaters[tools[state.currentTool].heaters[0]].current > heat.coldRetractTemperature
+		G91 ; relative positioning
+		G1 E-10 F6000 ; retract the filament a bit before lifting the nozzle to release some of the pressure
+		M291 P"Retracted 10mm" R"Retracting" S0 T3
+		G4 S4 ; wait for popup
+		G90 ; back to absolute positioning
+	else
+		M291 P{"Not retracted...  Heater off or below extrude temp  " ^ heat.heaters[1].current ^ " : " ^ heat.coldRetractTemperature ^ "."} R"Retract" S0 T5
+		G4 S6 ; wait for popup
 else
-	M291 P"Extruder temp too low to retract" R"Retracting" S0 T2
+	M291 P"No active tool" R"Check tools" S0 T3
 
 if {!move.axes[0].homed || !move.axes[1].homed || !move.axes[2].homed} ; check if the machine is homed
 	M291 P"Insufficient axis homed.  Cannot raise or park" R"Parking" S0 T3
+
 else
 	if {(move.axes[2].machinePosition) < (move.axes[2].max - 10)} ; check if there's sufficient space to raise head
 		M291 P{"Raising head to...  Z" ^ (move.axes[2].machinePosition+5)}  R"Raising head" S0 T2
 		G91 ; relative positioning
-		G1 Z5 F120 ; move Z up a bit
+		G1 Z30 F1800 ; move Z up a bit
 		G90 ;absolute positioning
 	else
 		M291 P{"Cannot raise head - insufficient space  " ^ move.axes[2].machinePosition ^ " : " ^ (move.axes[2].max - 10) ^ "."} R"Raising head" S0 T3
@@ -23,21 +34,38 @@ else
 	M291 P{"Parking head at X:" ^ (move.axes[0].min + 25) ^ " Y:" ^ (move.axes[1].max - 25)} R"Parking" S0 T3
 	G1 X{move.axes[0].min + 25} Y{move.axes[1].max - 25} F1800; parks X head pushes bed out to front so you can pull part
 	M400 ; wait for current moves to finish
+
 ; Shut down all tool heaters and set temps to zero.
-M98 P"0:/macros/heating/all_heaters_off.g"
+;M98 P"0:/macros/heating/all_heaters_off.g"
 ;Shut down all chamber heaters
 ;M98 P"0:/macros/heating/all_chamber_heaters_off.g"
 ;Shut down all bed heaters
 ;M98 P"0:/macros/heating/all_bed_heaters_off.g"
-M106 P0 S0 ; part fan off
-G90 ; absolute positioning
-;if move.axes[0].homed && move.axes[1].homed && move.axes[2].homed
-;	G1 X{move.axes[0].min} Y{move.axes[1].max} ; parks X head pushes bed out to front so you can pull part
-G4 S1 ; wait for moves to finish
+;T-1 P0; deselect all tools but don't run tool change macros
+
+while iterations < #move.extruders
+	M221 S100 D{iterations} ;set extrusion to 100% on all extruders
+
+M220 S100 ; Set speed factor to 100%
+M290 R0 S0 ; clear babystepping
+
+M104 S0 ; turn off temperature
+M140 S0 ; turn off heatbed
+M106 S0 ; turn off fan
+
 M84 ; steppers off
-M98 P"0:/sys/setDefaultProbePoints.g"
-M150 R0 B0 U0 Y0 X1 Q3000000 ; turn LEDs off
-G29 S2
-M291 P"Print cancelled" R"Cancelled" S0 T2
+G90 ; absolute positioning
+
+M98 P"0:/sys/setDefaultProbePoints.g"            ; re-define mesh grid in case it was altered
+
+; chamber LEDs off
+M98 P"0:/macros/LEDs/led_off.g"
+
+G29 S2 ; clear bed height map (disables bed compensation)
+
+;M291 P"DuetLapse3.completed" S2 # Will place the program into standby
+;M292
+;G4 S10
+
 M98 P"0:/macros/songs/itchyscratchy.g" ; play finish tune
 set global.Cancelled = false
