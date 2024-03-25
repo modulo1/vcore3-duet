@@ -6,27 +6,28 @@ M290 R0 S0 ; clear any baby-stepping
 M106 P0 S0 ; turn layer fan off if it is on
 M400       ; finish all moves, clear the buffer
 
-M98 P"0:/sys/build_plate.g" ; pull in build plate parameters 
+M98 P"0:/sys/setBuildPlate.g" ; pull in build plate parameters 
 							; heightmap, probe height, etc.
-							
+
+; chamber LEDs on
+M98 P"0:/macros/LEDs/led_on.g"
+		
 G32		   ; 3-point bed leveling
 
 ;M501	   ; load config-override.g
 M703	   ; load filament-specific config.g
 
 
-M98 P"0:/sys/input_shaping.g" ; pull in input shaping parameters
+M98 P"0:/sys/setInputShaping.g" ; pull in input shaping parameters
 
 G90        ; absolute Positioning
 M83        ; extruder relative mode
 
-M117 DuetLapse3.start
-G4 S10
-
-M150 R255 B255 U255 Y31 X1 Q3000000 ; LEDs on
-
+;=== DuetLapse3 control ===;
+;M291 P"DuetLapse3.start" S2
+;M292
+;G4 S10
+    
 M98 P"0:/sys/setDefaultProbePoints.g" ; reset probe points, just in case
 
-; slicer start code 
-;; ideally it should just set & wait for temps
-;;  and move to prime line start
+;=== slicer start code ===; 
