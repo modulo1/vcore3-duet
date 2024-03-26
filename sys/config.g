@@ -143,12 +143,6 @@ M143 H0 S120                                              ;; set heater H0 tempe
 ;=== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ===;
 M307 H0 R0.480 K0.256:0.000 D2.03 E1.35 S1.00 B0          ;; this is my M307, find your own
 
-;=== configuration - sensor - accelerometer ===;
-M955 P20.0 I16 R10                                        ;; create accelerometer on RRF36
-;;; I = accelerometer orientation, expressed as 2-digit number. see
-;;;  https://www.dropbox.com/s/hu2w5mk57l4zqpg/Accelerometer%20Orientation.pdf
-;;;  for all possible permutations
-
 ;=== configuration - sensor - chamber monitoring ===;
 M308 S5 P"0.io4.out+0.io4.in" Y"dht22" A"Chamber"         ;; DHT22 setup
 M308 S8 P"S5.1" Y"dht-humidity" A"Humidity[%]"
@@ -168,3 +162,4 @@ M568 P0 R0 S0 A0                                          ;; turn tool0 heater o
 M140 S-273.1                                              ;; turn bed off
 T0 P0                                                     ;; select T0, don't run any toolchange macros
 ;=== configuration ===;
+M98 P"0:/macros/songs/itchyscratchy.g"                    ;; play tune to show we're ready
