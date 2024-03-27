@@ -39,11 +39,12 @@ M203 E7200                                                                    ;;
 M205 E5.0
 M201 E10000
 
+T0 P0                                                                         ;; select T0, don't run toolchange macro
+
 M703                                                                          ;; load filament specific gcode
                                                                               ;; I keep filament-specific PID tuning, retraction, and pressure advance 
                                                                               ;; settings here.
                                                                               
-T0 P0                                                                         ;; select T0, don't run toolchange macro
 ;=== gizmo0 - options ===;
 M950 E0 C"20.rgbled" T2 U2 Q3000000                       ;; configure toolhead LED E0 on FLY36.rgbled (20.rgbled)
 ;M98 P"0:/sys/setFilamentMonitor.g"                       ;; filament monitor
