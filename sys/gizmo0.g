@@ -46,6 +46,7 @@ M703                                                                          ;;
                                                                               ;; settings here.
                                                                               
 ;=== gizmo0 - options ===;
-M950 E0 C"20.rgbled" T2 U2 Q3000000                       ;; configure toolhead LED E0 on FLY36.rgbled (20.rgbled)
-;M98 P"0:/sys/setFilamentMonitor.g"                       ;; filament monitor
-;M98 P"0:/sys/setInputShaping.g"                          ;; input shaping parameters
+M955 P20.0 I12                                                                ;; accelerometer on RRF36
+M950 E0 C"20.rgbled" T2 U2 Q3000000                                           ;; configure toolhead LED E0 on FLY36.rgbled (20.rgbled)
+;M98 P"0:/sys/setFilamentMonitor.g"                                           ;; filament monitor
+;M98 P"0:/sys/setInputShaping.g"                                              ;; input shaping parameters
