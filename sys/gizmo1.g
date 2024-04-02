@@ -54,7 +54,7 @@ M106 P0 C"tool" S0 H1 T45 L255                                                ;;
 
 ;=== gizmo1 - extruder ===;
                                                                               ;; Orbiter v2 with LDO motor
-M906 E1200 I10                                                                ;; set extruder motor current and idle factor
+M906 E1400 I10                                                                ;; set extruder motor current and idle factor
 M350 E16 I1                                                                   ;; set microstepping to 16 with interpolation
 M92 E671.64                                                                   ;; set extruder steps per mm
 M203 E7200                                                                    ;; set max speed, jerk, acceleration
@@ -68,6 +68,7 @@ M703                                                                          ;;
                                                                               ;; settings here.
                                                                               
 ;=== gizmo1 - options ===;
+M955 P20.0 I10                                                                ;; accelerometer on RRF36
 M950 E0 C"20.rgbled" T2 U2 Q3000000                                           ;; configure toolhead LED E0 on FLY36.rgbled (20.rgbled)
 ;M98 P"0:/sys/setFilamentMonitor.g"                                           ;; filament monitor
 ;M98 P"0:/sys/setInputShaping.g"                                              ;; input shaping parameters
