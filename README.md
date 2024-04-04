@@ -1,44 +1,36 @@
 # vcore3-duet
-collecting the configuration files for my rat rig v-core 3 
 
+spent a lot of time updating this after upgrading my V-Core 3.1 to enclosure 2.0 in preparation of adding 
+an 8-channel ERCFv2.
 
-I recently started building a Rat Rig V-Core 3 (300mm^3) and noticed that a lot of configuration boards are incomplete due to current offerings, or obsolete due to changes in RepRapFirmware.  So as I was building my VC3, I decided to make a concerted effort to document as much as the configuration as possible.  Doing that for my setup would allow others to get a head start when they started work on theirs.
+I'm still working on the appropriate configuration, macros, and toolchange files for that, but this is my 
+current config, and it works pretty well.
 
-Plan on finding:
+* config.g is a little less novice-friendly, but more concise.  Important commands are still documented, 
+  where necessary, but there's less focus on explicitly defining every single little command and 
+  argument definition the last config.g had.
 
-config.g ✔️
+  Things, like input shaping (see setInputShaping.g), are explicitly defined (with examples)
+  to ease configuration.
 
-bed.g ✔️
+* the beginning of config.g has a reference section that reflects my current setup, the idea being
+  to minimize back-and-forths trying to keep different pin and servo definitions separate in my 
+  brain when writing macros.
 
-homex.g ✔️
+* there are 8 separate configuration files (ten with the ERCFv2) referenced in config.g,
+  holding the configuration for things that may need frequent changing.  The files are generally
+  short, and don't need as much scrolling to navigate.  Things like jerk/accel/speed, toolhead
+  definition (see gizmo0.g), input shaping, and mesh probe points are configured outside config.g
+  so they can be changed and loaded without necessarily having to parse config.g again
 
-homey.g ✔️
+* everything toolhead related (extruder, hotend, fans, LEDs, accelerometer) gets moved into a file
+  called gizmoN.g and loaded in config.g near the end with M98.  For example, if you want to try
+  out new hotend/extruder combo, copy gizmo0.g to gizmo1.g, make the necessary changes, and 
+  change the appropriate M98 command in config.g.
 
-homez.g ✔️
+  Extruder port assignments are handled in config.g, but the appropriate M201/M203/M205 commands
+  are loaded with gizmoN.g.  Likewise, X/Y motor assignments are in config.g and X/Y M201/M203/M205
+  commands are handled by setMaxSpeed.g.
 
-homeall.g ✔️
-
-pause.g ✔️
-
-resume.g ✔️
-
-start.g ✔️
-
-stop.g ✔️
-
-and working filament gcode for PETG and PLA, since you'll need those as well for filament loading and unloading
-
-The end goal is a configuration bundle for a working printer that others will be able to use.
-
-![image](https://user-images.githubusercontent.com/30335181/154629055-50f9e716-568a-4af6-9796-2cd94b6b67b1.png)
-
-
-A couple of caveats: 
-
-This is a working configuration for me; I am quite happy with the prints I'm getting with it.  
-It's also not the fastest configuration.  It won't win any Speed Benchy competitions.
-There is a lot of room for improvement with this configuration.
-
-There are two lines in the configuration that are commented out that are necessary for safe operation.  They are the result of the PID tuning you would get after running ```M303```.  I am including them so you know what they look like, but you should use the results you get from running ```M303``` yourself.
-
-Other things that are commented out include the configuration for the Paneldue 7i, and the working configuration for a BLTouch, which has been supersceded by the SuperPINDA.  There's also a configuration block for adding MCU temperature to the graph along side the extruder and bed temp.
+The result is a config.g that comes in under 170 lines and despite the numerous includes, 
+appears to load faster than my old monolithic config.g.
