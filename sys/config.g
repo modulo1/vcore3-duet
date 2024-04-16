@@ -18,11 +18,17 @@
 ;=== external configurations referenced ===;
 ;; M98 P"0:/sys/init.g"
 ;; M98 P"0:/sys/setMaxSpeed.g"
+;; M98 P"0:/sys/setHomingSpeed.g"
 ;; M98 P"0:/sys/gizmo0.g"
+;; M98 P"0:/sys/gizmo1.g"
 ;; M98 P"0:/sys/setBuildPlate.g"
 ;; M98 P"0:/sys/setDefaultProbePoints.g"
 ;; M98 P"0:/sys/setFilamentMonitor.g"
 ;; M98 P"0:/sys/setInputShaping.g"
+
+;=== gizmos ===;
+;; gizmo0 - vz-hextrudort, e3d revo
+;; gizmo1 - orbiter 2.0, e3d revo
 
 ;=== sensors referenced with M308 ===;
 ;; S0 = bed (0.temp0)
@@ -155,11 +161,11 @@ M950 P0 C"0.out5" Q1000                                   ;; configure Dayspring
 ;=== configuration - overrides ===;
 ;M501                                                     ;; config-override.g should remain empty      
 
-;=== configuration - gizmo0 ===;
-M98 P"0:/sys/gizmo0.g"
+;=== configuration - gizmo1 ===;
+M98 P"0:/sys/gizmo1.g"
 ;; housekeeping
 M568 P0 R0 S0 A0                                          ;; turn tool0 heater off
 M140 S-273.1                                              ;; turn bed off
 T0 P0                                                     ;; select T0, don't run any toolchange macros
 ;=== configuration ===;
-M98 P"0:/macros/songs/itchyscratchy.g"                    ;; play tune to show we're ready
+;M98 P"0:/macros/songs/itchyscratchy.g"                    ;; play tune to show we're ready
