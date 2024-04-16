@@ -16,19 +16,11 @@ G10 P0 X0 Y0 Z0                                                               ;;
 M143 H1 S280
 G10 P0 R0 S0
 
-;=== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ===;
-;; run hotend PID tune!! using code below
-;;; T0 = PID tune tool0
-;;; S210 = temperature in C (210C)
-;;; F0.45 = Fan PWM value; 0.45 = 45%;; gizmoN.g is the comprehensive definition of a tool (extruder, hotend, heater, thermisistor, filament monitoring, input shaping, tool and part cooling fans)
-;; includes hotend (thermistor, heater), fan (tool, part), extruder (axis, microstepping), tool assignment and offset
-
 ;=== gizmo1 - fan ===;
 M950 F1 C"!0.out4+0.out4.tach"                                                ;; create fan F1 named "4028" with duet.out4+duet.out4.tach (0.out4+0.out4.tach)
 M106 P1 C"4028" S0 H-1
 
 ;=== gizmo1 - hotend thermistor ===;
-
 M308 S1 P"20.temp0" Y"thermistor" T100000 B4725 C7.060000e-8 A"e3drevo"       ;; configure sensor 1 (S1) on pin RRF36.temp0 (20.temp0) as thermistor
 M950 H1 C"20.out0" T1                                                         ;; create heater output (H1) on RRF36.out0 (20.out0) and map to sensor 1 (T1)
 M307 H1 B0 S1.00                                                              ;; set PWM limit (S1.00)
@@ -54,7 +46,7 @@ M106 P0 C"tool" S0 H1 T45 L255                                                ;;
 
 ;=== gizmo1 - extruder ===;
                                                                               ;; Orbiter v2 with LDO motor
-M906 E1400 I10                                                                ;; set extruder motor current and idle factor
+M906 E1200 I10                                                                ;; set extruder motor current and idle factor
 M350 E16 I1                                                                   ;; set microstepping to 16 with interpolation
 M92 E671.64                                                                   ;; set extruder steps per mm
 M203 E7200                                                                    ;; set max speed, jerk, acceleration
