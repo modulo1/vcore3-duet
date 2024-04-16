@@ -24,7 +24,7 @@ G10 P0 R0 S0
 ;;; ; M303 T0 S210 F0.45
 ;;; replace M307 below with results from M303
 ;=== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ===;
-M307 H1 R2.788 K0.501:0.000 D6.52 E1.35 S1.00 B0 V24.0                        ;; this is my M307, find your own
+M307 H1 R3.611 K0.702:0.541 D1.95 E1.35 S1.00 B0 V23.5                        ;; this is my M307, find your own
 
 ;=== gizmo0 - fan - hotend ===;
 M950 F0 C"20.out2" Q250                                                       ;; create fan 0 (F0) on pin RRF.out2 (20.out2)
@@ -46,7 +46,7 @@ M703                                                                          ;;
                                                                               ;; settings here.
                                                                               
 ;=== gizmo0 - options ===;
-M955 P20.0 I12                                                                ;; accelerometer on RRF36
+M955 P20.0 I10                                                                ;; accelerometer on RRF36
 M950 E0 C"20.rgbled" T2 U2 Q3000000                                           ;; configure toolhead LED E0 on FLY36.rgbled (20.rgbled)
 ;M98 P"0:/sys/setFilamentMonitor.g"                                           ;; filament monitor
-;M98 P"0:/sys/setInputShaping.g"                                              ;; input shaping parameters
+M98 P"0:/sys/setInputShaping.g"                                              ;; input shaping parameters
