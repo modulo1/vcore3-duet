@@ -3,5 +3,5 @@ G4 S3
 echo "Heater fault"
 echo param.S
 if state.status="processing"
-	M25 ; pause print
+    M25 ; pause print
 M0 ; shut down printer
