@@ -4,7 +4,7 @@
 
 M558.2 K1 S13 R216240
 
-;; V=Threshold. Start with V0.1 and increase until it works reliably without misdetections.
+;; V=Threshold. Start with V0.1 and increase until it works reliably without false triggers.
 ;; H=Nozzle height (mm) to be assumed when touch is detected, normally negative
 ;;    closer to zero = closer to the bed (I think...)
 

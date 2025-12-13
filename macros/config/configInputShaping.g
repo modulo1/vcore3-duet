@@ -7,15 +7,13 @@
 ;; Tnn:nn Durations of each impulse except the last. Only used with P"custom" parameter.
 ;
 ; Since the input shaping plugin doesn't give you the M593 command it uses, you need to reconstruct it from scratch.
-; So this: 
-;Input shaping 'mzv' at 25.0Hz damping factor 0.05, impulses 0.259 0.413 0.328 with delays (ms) 0.00 15.02 30.04
+; So this: Input shaping 'mzv' at 25.0Hz damping factor 0.05, impulses 0.259 0.413 0.328 with delays (ms) 0.00 15.02 30.04
+; becomes the following:
 ;M593 P"mzv" F25.0 S0.05 H0.259:0.413:0.328 T0.00:15.02:30.04
 
-;Input shaping 'mzv' at 25.0Hz damping factor 0.05, impulses 0.259 0.413 0.328 with delays (ms) 0.00 15.02 30.04
-;M593 P"mzv" F25.0 S0.05 H0.259:0.413:0.328 T0.00:15.02:30.04
 
-;Input shaping 'zvdd' at 40.0Hz damping factor 0.05, impulses 0.157 0.402 0.343 0.098 with delays (ms) 0.00 12.51 25.03 37.55
-;M593 P"zvdd" F40.0 S0.05 H0.157:0.402:0.343:0.098 T0.00:12.51:25.03:37.55
+
+;;=== copy M593 output below ===;;
 
 ;Input shaping 'mzv' at 43.0Hz damping factor 0.05, impulses 0.259 0.413 0.328 with delays (ms) 0.00 8.73 17.46
 M593 P"mzv" F43.0 S0.05 H0.259:0.413:0.329 T0.00:8.73:17.46
