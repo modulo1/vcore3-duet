@@ -3,11 +3,19 @@
 
 set global.cancelled = true
 
+if exists(global.ercfConfigured)
+    echo "ERCF configured; print cancelled - unloading filament back to gate"      
+    T-1
+else
+    M400
+
+
+
 if {state.currentTool!=-1} ; check if any tools are active
     if #tools[state.currentTool].heaters > 0 & heat.heaters[tools[state.currentTool].heaters[0]].current > heat.coldRetractTemperature
         G91 ; relative positioning
-        G1 E-18 F6000 ; retract the filament a bit before lifting the nozzle to release some of the pressure
-        M291 P"Retracted 10mm" R"Retracting" S0 T3
+        G1 E-5 F6000 ; retract the filament a bit before lifting the nozzle to release some of the pressure
+        M291 P"Retracted 5mm" R"Retracting" S0 T3
         ;G4 S4 ; wait for popup
         G90 ; back to absolute positioning
     else
@@ -46,13 +54,19 @@ M106 S0 ; turn off fan
 M84 ; steppers off
 G90 ; absolute positioning
 
+;M98 P"0:/sys/configDefaultProbePoints.g"            ; re-define mesh grid in case it was altered
+
 ; chamber LEDs off
 M98 P"0:/macros/LEDs/4_LED-off.g"
 
 G29 S2 ; clear bed mesh
 
+;M291 P"DuetLapse3.completed" S2 # Will place the program into standby
 ;M292
 ;G4 S10
+
+G28 X
+G28 Y
 
 M98 P"0:/macros/songs/endPrint.g"  ; play finish tune
 set global.cancelled = false

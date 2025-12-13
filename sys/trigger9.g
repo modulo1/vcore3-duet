@@ -1,1 +1,1 @@
-set global.ercf_pulse_count = global.ercf_pulse_count + 1
+set global.ercfPulseCount = global.ercfPulseCount + 1

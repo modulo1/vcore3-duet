@@ -1,6 +1,4 @@
 ;; filament monitor - duet magnetic filament monitor
-;; referenced from gizmoN.g configuration
-
 ;M591 D0 P3 C"121.io1.in" R90:115 S0 A0 L25.60 E3
 
 ;; filament monitor - orbiter filament sensor v2.0

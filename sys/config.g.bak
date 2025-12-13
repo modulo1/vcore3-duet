@@ -4,8 +4,8 @@
 ;if you're too lazy to type M999
 ; config.g by omtek
 
-;; current configuration ;;
-; duet 3 mini 5+ running RRF 3.6.1 standalone
+; current configuration ;
+; duet 3 mini 5+ running RRF 3.5rc3 with raspberry pi 4B+ 4GB
 ; Mellow Fly SHT36MAX3 Toolboard
 ; CannedERCF Board
 ; PanelDue 7i
@@ -18,21 +18,18 @@
 ;;  0. mainboard
 
 ;=== external configurations referenced ===;
-;; M98 P"0:/macros/config/configInitPre.g"
-;; M98 P"0:/macros/config/configInitPost.g"
-;; M98 P"0:/macros/config/configMaxSpeed.g"
-;; M98 P"0:/macros/config/configHomingSpeed.g"
-;; M98 P"0:/macros/config/configBuildPlate.g"
-;; M98 P"0:/macros/config/configDefaultProbePoints.g"
-;; M98 P"0:/macros/config/configFilamentMonitor.g"
-;; M98 P"0:/macros/config/configInputShaping.g"
-;; M98 P"0:/macros/config/configSZPnormal.g"
-;; M98 P"0:/macros/config/configSZPtouch.g"
+;; M98 P"0:/sys/init.g"
+;; M98 P"0:/sys/setMaxSpeed.g"
+;; M98 P"0:/sys/gizmo0.g"
+;; M98 P"0:/sys/gizmo1.g"
+;; M98 P"0:/sys/setBuildPlate.g"
+;; M98 P"0:/sys/setDefaultProbePoints.g"
+;; M98 P"0:/sys/setFilamentMonitor.g"
+;; M98 P"0:/sys/setInputShaping.g"
 
 ;=== sensors referenced with M308 ===;
 ;; S0 = bed (0.temp0)
-;; S1 = hotend (20.max31865cs)
-;; S4 = SZP (20.temp1)
+;; S1 = hotend (20.temp0)
 ;; S5 = BME280 temperature, chamber (0.spi.cs1)
 ;; S8 = BME280 humidity, chamber (SPI)
 ;; S10 = BME280 pressure, chamber (SPI)
@@ -56,10 +53,10 @@
 
 ;=== pin names created with M950 ===;
 ;; E0 = toolhead LED (20.rgbled)
-;; P0 = Dayspring LEDs (0.out1)
-;; F1 = 4028 part-cooling fan (0.out2)
+;; P0 = Dayspring LEDs (0.out5)
+;; F1 = 4028 part-cooling fan (0.out4+0.out4.tach)
 ;; F0 = tool fan (20.out2)
-;; S1 = servo-driven nozzle wiper (0.io1.out)
+;; F2 = mainboard fan
 ;; === ERCF === ;;
 ;; S10 = tophat servo (19.io0.out)
 ;; S5 = filament cutter (0.vfd)
@@ -82,7 +79,7 @@ M552 S1
 M122 P500 S0
 
 ;=== configuration -  PanelDue init ===;
-M575 P1 S4 B57600
+M575 P1 S4 B57600 
 
 ;=== configuration - printer ===;
 G90                                                        ;; absolute coordinates, relative extruder moves
@@ -97,6 +94,7 @@ M569 P0.3 S1 D2                                            ;; Left and right mot
 M569 P0.4 S1 D2
 
 ;=== configuration - drive - axis mapping ===;
+;M584 X0.3 Y0.4 Z0.1:0.0:0.2 E20.0                         ;;  map E-axis here as toolboard will be connected
 M584 X0.3 Y0.4 Z0.2:0.0:0.1 E20.0                          ;;  map E-axis here as toolboard will be connected
 
 ;=== configuration - drive - microstepping ===;
@@ -120,6 +118,7 @@ M574 Y2 S1 P"0.io4.in"                                    ;; configure Y active 
 M574 Z1 S2                                                ;; configure Z-probe (S2) endstop at low end (Z1)
 
 ;=== configuration - axis - z-probe ===;
+;M558 P8 C"^20.io0.in" H5:1 F300:120 T9000 A20 B0 K0         ;; klicky pcb probe installed on RRF36.io0.in (20.io0.in)
 M558 P8 C"20.io0.in" H5:1 F300:120 T12000 A20 B0 K0         ;; inductive probe installed on RRF36.io0.in (20.io0.in)
 
 ;=== configuration - axis - mesh compensation and bed dismensions ===;
@@ -129,7 +128,7 @@ M557 X10:290 Y10:290 P20                                      ;; set values as y
 if !exists(global.bedCenterX)                           ;; calculate bed center, insert into object model
     global bedCenterX = floor(move.axes[0].max / 2)
 if !exists(global.bedCenterY)
-    global bedCenterY = floor(move.axes[1].max / 2)
+    global bedCenterY = floor(move.axes[1].max  / 2)
 
 ;=== configuration - axis - lead screw position ===;
 M671 X-4.5:150:304.5 Y-4.52:305:-4.52 S5
@@ -155,11 +154,12 @@ M143 H0 S120                                              ;; set heater H0 tempe
 ;;; M307 may have a Vnnn included with it
 ;;;  if you're using mains (AC) bed heater on your bed, omit it
 ;=== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ===;
+;M307 H0 R0.480 K0.256:0.000 D2.03 E1.35 S1.00 B0          ;; this is my M307, find your own
+;M307 H0 R0.475 K0.253:0.000 D1.98 E1.35 S1.00 B0
 M307 H0 R0.474 K0.219:0.000 D2.07 E1.35 S1.00 B0
 
 ;=== configuration - sensor - accelerometer ===;
 M955 P20.0 I10                                            ;; create accelerometer on SHT36MAX3
-
 ;;; I = accelerometer orientation, expressed as 2-digit number. see
 ;;;  https://www.dropbox.com/s/hu2w5mk57l4zqpg/Accelerometer%20Orientation.pdf
 ;;;  for all possible permutations
@@ -172,18 +172,30 @@ M308 S8 P"S5.1" Y"bme-pressure" A"Pressure[hPa]"
 M308 S11 Y"mcu-temp" A"MCU"                                                   ;; MCU temperature, with offset
 M912 P0 S-1.2
 
+;M950 F2 C"0.out3" Q250                                                       ;; create fan2 (F2) on pin 0.out2
+;M106 P2 C"mainboard cooling" S0 H1 T155 L255                                 ;; set fan2 (P2) to thermostatic control (155C), full-speed (L255) named "mainboard cooling"
+
 ;=== configuration - LEDs, chamber & toolhead ===;
 M950 P0 C"0.out1" Q2500                                                       ;; configure Dayspring LEDs P0 on duet.out1 (0.out1)
 
 ;=== configuration - overrides ===;
 ;M501                                                                         ;; config-override.g should remain empty
 
-;=== configuration - tool - fan ===;
+;=== configuration - gizmo7 ===;
+M550 P"legionXY_gizmo7"
+
+;=== gizmo7 - fan ===;
 M950 F1 C"0.out2" Q2500
 M106 P1 C"4028" S0 H-1
+;M950 F1 C"0.out4+0.out4.tach" Q250                                           ;; create fan F1 named "4028" with duet.out4+duet.out4.tach (0.out4+0.out4.tach)
+;M950 F1 C"!0.out2+0.out4.tach"                                               ;; create fan F1 named "4028" with duet.out4+duet.out4.tach (0.out4+0.out4.tach)
+;M106 P1 C"4028" S0 H-1
+;M950 F1 C"!0.out4"                                                           ;; create fan F1 named "4028" with duet.out4+duet.out4.tach (0.out4+0.out4.tach)
+;M106 P1 C"4028" S0 H-1
 
-;=== configuration - hotend - thermistor ===;
+;=== gizmo7 - hotend thermistor ===;
 M308 S1 P"20.max31865cs" Y"rtd-max31865" A"rapido2HF" F60 R430 W2
+;M308 S1 P"20.temp0" Y"pt1000" A"rapido2HF" R1000 W2                          ;; configure sensor 1 (S1) on pin RRF36.temp0 (20.temp0) as thermistor
 M950 H1 C"20.out0" T1                                                         ;; create heater output (H1) on SHT36MAX3.out0 (20.out0) and map to sensor 1 (T1)
 M307 H1 B0 S1.00                                                              ;; set PWM limit (S1.00)
 M563 P0 S"orbiter2.5" D0 H1 F1                                                ;; define tool0 (T0)
@@ -202,11 +214,11 @@ G10 P0 R0 S0
 ;=== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ===;
 M307 H1 R8.197 K0.917:0.692 D0.89 E1.35 S1.00 B0 V0.0           ;; rapido2uhf, new-style pt1000, max31865
 
-;=== configuration - hotend - fan ===;
-M950 F0 C"20.out2" Q250                                                           ;; create fan 0 (F0) on pin RRF.out2 (20.out2)
-M106 P0 C"toolhead" S0 H1 T45 L255                                                 ;; set fan 0 (P0) to thermostatic control (45C), full-speed (L255) named "tool"
+;=== gizmo7 - fan - hotend ===;
+M950 F0 C"20.out2" Q500                                                           ;; create fan 0 (F0) on pin RRF.out2 (20.out2)
+M106 P0 C"toolhead" S0 H1 T45 L255                                                ;; set fan 0 (P0) to thermostatic control (45C), full-speed (L255) named "tool"
 
-;=== configuration - extruder ===;
+;=== gizmo7 - extruder ===;
 M569 P20.0 S1 D2                                                              ;; Extruder, RRF36.driver0
                                                                               ;; VZ-Hextrudort Low with LDO motor
 M906 E1200                                                                    ;; set extruder motor current
@@ -222,10 +234,10 @@ M558 K1 P11 C"20.i2c.ldc1612" F12000:6000 T18000 A20
 M308 A"SZP" S4 Y"thermistor" P"20.temp1" T100000 B4092                        ;; thermistor on PCB/coil
 M98 P"0:/macros/config/configSZPnormal.g"                                               ;; we're using SZP touch mode
 
-G31 K0 X-27.8 Y-12.0 Z0.80
-G31 K1 X0.0 Y15.00
+G31 K0 X-27.8 Y-12.0 Z0.80 
+G31 K1 X0.0 Y15.00  
 
-;=== configuration - options ===;
+;=== gizmo7 - options ===;
 M955 P20.0 I12                                                                ;; accelerometer on RRF36
 M950 E0 C"20.rgbled" T2 U2 Q3000000                                           ;; configure toolhead LED E0 on SHT36MAX3.rgbled (20.rgbled)
 
@@ -242,10 +254,9 @@ T0 P0                                                                         ;;
 M703                                                                          ;; load filament specific gcode
                                                                               ;; I keep filament-specific PID tuning, retraction, and pressure advance
                                                                               ;; settings here.
+;=== configuration end ===;
 
 ;=== configuration - housekeeping ===;
 M98 P"0:/macros/config/configInitPost.g"                                    ;; set the last few variables we need that rely on loaded configuration
 M98 P"0:/macros/config/configBuildPlate.g"                             ;; see setBuildPlate.g for Z probe trigger value (not SZP), offset, trigger height and mesh fade.
 ;=== discard if necessary ===;
-
-;=== configuration end ===;
