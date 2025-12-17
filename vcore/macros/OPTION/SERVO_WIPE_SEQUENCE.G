@@ -1,0 +1,82 @@
+;; nozzle preheat and wipe motion
+;; to be called during homing z
+
+
+;; x-pos X250
+;; y-pos Y220
+
+;; wipe-x-pos X250
+;; wipe-y-pos Y290
+
+
+var end_pos_x = 247
+var end_pos_y = 220
+
+var start_pos_x = 252
+var start_pos_y = 290
+
+var wipe_speed = 12000
+
+G90                                                         ;; set absolute positioning
+G1 Z25                                                      ;; move bed below wiper
+
+;M201 X500 Y500                                              ;; reduce acceleration
+
+;; move behind brush
+G1 X{var.start_pos_x} Y{var.start_pos_y} F{var.wipe_speed}
+
+M98 P"0:/macros/option/SERVO_WIPE_ENGAGE.g"                 ;; move wiper above bed
+
+
+;; set nozzle standby temp to cold extrude temp
+M568 S{heat.coldExtrudeTemperature} A2 P0
+M116 P0
+
+
+
+
+G4 S1
+
+;; wipe 4x
+M98 P"0:/macros/option/SERVO_WIPE_MOVE_GYR1.g" F{var.wipe_speed/2}
+M400
+
+M98 P"0:/macros/option/SERVO_WIPE_MOVE_GYR2.g" F{var.wipe_speed}
+M400
+
+;M98 P"0:/macros/option/SERVO_WIPE_MOVE_GYR1.g" F{var.wipe_speed/3}
+;M400
+
+;M98 P"0:/macros/option/SERVO_WIPE_MOVE_GYR2.g" F{var.wipe_speed}
+;M400 
+
+;; move behind brush
+G1 X{var.start_pos_x} Y{var.start_pos_y} F{var.wipe_speed}
+
+
+M400
+
+;; retract brush
+M98 P"0:/macros/option/SERVO_WIPE_DISENGAGE.g"
+
+G4 P500
+
+;; heater on standby if printing, else off
+if exists(job.build)
+    echo "Printing - setting to standby temp"
+    M568 S100 A2 P0
+else
+    M568 P0 S0 A2
+    echo "Not printing - turning heater off"
+
+G4 S5
+
+;; reset speeds
+M98 P"0:/sys/configOrcaSpeeds.g"
+
+;; move back to center
+G1 X{global.bedCenterX - sensors.probes[1].offsets[0]} Y{global.bedCenterY - sensors.probes[1].offsets[1]} F{var.wipe_speed}
+
+M400
+
+

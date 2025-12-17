@@ -1,0 +1,4 @@
+M42 P0 S0
+
+; toolhead LEDs
+M150 E0 W0 P0 S2 F0
