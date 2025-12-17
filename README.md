@@ -13,7 +13,7 @@ Current configuration has stabilized into the following:
 
 - enclosure 2.0 
 
-
+<img src="./media/legionXY-enc20.jpg">
 
 Moved back to a more monolithic-style config.g now that the printer is less in a state of flux.
 
@@ -25,4 +25,4 @@ I've also made significant progress on my ERCFv2 macros, though they're on pause
 macros (8 channels, three macros for toolchange; tfree1.g, tpost5.g, etc.) I went with generic, un-numbered macros.  
 I was up 4 successful filament changes before I put the project on pause.
 
-I also had an idea on how they could be modified to support the servo-less ERCFv3, but I haven't had a change to upgrade to v3.
+I also had an idea on how they could be modified to support the servo-less ERCFv3, but I haven't had a chance to upgrade to v3.
