@@ -22,10 +22,10 @@ M98 P"0:/macros/option/SERVO_WIPE_ENGAGE.g"                 ;; move wiper above 
 M400
 
 ;; set nozzle standby temp to cold extrude temp
-M568 S{heat.coldExtrudeTemperature} A2 P0
+M568 S180 A2 P0
 M116 P0
 
-G4 S1
+G4 S5
 
 ;; wipe 4x
 
@@ -33,34 +33,14 @@ M98 P"0:/macros/OPTION/SERVO_WIPE_MOVE_FB.g"
 M400
 
 M98 P"0:/macros/OPTION/SERVO_WIPE_MOVE_LR.g"
-M400
-
-;; wait for oozing...
-G4 S5
-
-M98 P"0:/macros/OPTION/SERVO_WIPE_MOVE_FB.g"
-M400
-
-M98 P"0:/macros/OPTION/SERVO_WIPE_MOVE_LR.g"
-M400
-
+M400 
 
 ;; move behind brush
 G1 X{var.start_pos_x} Y{var.start_pos_y} F{var.wipe_speed}
 
-;; retract brush
-M98 P"0:/macros/option/SERVO_WIPE_DISENGAGE.g"
+;; cooldown wipe sequence
+M98 P"0:/macros/OPTION/SERVO_WIPE_COOLDOWN.g"
 M400
-
-;; heater on standby if printing, else off
-if exists(job.build)
-    echo "Printing - setting to standby temp"
-    M568 S100 A2 P0
-else
-    M568 P0 S0 A2
-    echo "Not printing - turning heater off"
-
-G4 S5
 
 ;; reset speeds
 M98 P"0:/macros/config/configMaxSpeed.g"
@@ -68,7 +48,9 @@ M400
 
 ;; move back to center
 G1 X{global.bedCenterX - sensors.probes[1].offsets[0]} Y{global.bedCenterY - sensors.probes[1].offsets[1]} F{var.wipe_speed}
-
 M400
 
+;; retract brush
+M98 P"0:/macros/option/SERVO_WIPE_DISENGAGE.g"
+M400
 

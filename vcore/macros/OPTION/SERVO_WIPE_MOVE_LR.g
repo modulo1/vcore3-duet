@@ -16,4 +16,4 @@ G1 X{var.start_pos_x - 10} Y{var.start_pos_y - 10} F{var.wipe_speed / 3}
 G1 X{var.end_pos_x + 10} Y{var.end_pos_y + 10} F{var.wipe_speed / 3}
 
 G1 X{var.end_pos_x - 10} Y{var.end_pos_y + 10} F{var.wipe_speed / 3}
-G1 X{var.start_pos_x + 10} Y{var.start_pos_y} F{var.wipe_speed / 3}
+G1 X{var.start_pos_x} Y{var.start_pos_y} F{var.wipe_speed / 3}
