@@ -14,14 +14,14 @@ M401
 ;=== probe sanity check commands ===;
 
 ;; inductive
-;; G1 X{ 10 - sensors.probes[0].offsets[0] }  Y{ 20 - sensors.probes[0].offsets[1] }
-;; G1 X{ 155 - sensors.probes[0].offsets[0] }  Y{ 290 - sensors.probes[0].offsets[1] }
-;; G1 X{ 290 - sensors.probes[0].offsets[0] }  Y{ 20 - sensors.probes[0].offsets[1] }
+;; G1 X{ 10 - sensors.probes[0].offsets[0] } Y{ 20 - sensors.probes[0].offsets[1] }
+;; G1 X{ 155 - sensors.probes[0].offsets[0] } Y{ 290 - sensors.probes[0].offsets[1] }
+;; G1 X{ 290 - sensors.probes[0].offsets[0] } Y{ 20 - sensors.probes[0].offsets[1] }
 
 ;; szp
-;; G1 X{ 10 - sensors.probes[1].offsets[0] }  Y{ 15 - sensors.probes[1].offsets[1] }
-;; G1 X{ 155 - sensors.probes[1].offsets[0] }  Y{ 290 - sensors.probes[1].offsets[1] }
-;; G1 X{ 300 - sensors.probes[1].offsets[0] }  Y{ 15 - sensors.probes[1].offsets[1] }
+;; G1 X{ 15 - sensors.probes[1].offsets[0] } Y{ 25 - sensors.probes[1].offsets[1] }
+;; G1 X{ 155 - sensors.probes[1].offsets[0] } Y{ 290 - sensors.probes[1].offsets[1] }
+;; G1 X{ 295 - sensors.probes[1].offsets[0] } Y{ 25 - sensors.probes[1].offsets[1] }
 
 ;M98 P"0:/macros/config/configSZPnormal.g"
 M98 P"0:/macros/config/configSZPtouch.g"
@@ -34,9 +34,9 @@ M98 P"0:/macros/config/configSZPtouch.g"
 
 ;=== rough pass estimate - SZP touch===;
 
-G30 K1 P0 X10 Y15 Z-99999          ; probe near a leadscrew
+G30 K1 P0 X15 Y25 Z-99999          ; probe near a leadscrew
 G30 K1 P1 X155 Y290 Z-99999        ; probe near a leadscrew
-G30 K1 P2 X300 Y15 Z-99999 S3      ; probe near a leadscrew and calibrate 3 motors
+G30 K1 P2 X295 Y25 Z-99999 S3      ; probe near a leadscrew and calibrate 3 motors
 
 echo "Current rough pass deviation: " ^ move.calibration.initial.deviation
 
@@ -45,9 +45,9 @@ while move.calibration.initial.deviation > 0.005
         echo "Error: Max attempts failed. Deviation: " ^ move.calibration.initial.deviation
         break
     echo "Deviation over threshold. Executing pass" , iterations+1, "deviation", move.calibration.initial.deviation
-    G30 K1 P0 X10 Y15 Z-99999 ; probe near a leadscrew
+    G30 K1 P0 X15 Y25 Z-99999 ; probe near a leadscrew
     G30 K1 P1 X155 Y290 Z-99999 ; probe near a leadscrew
-    G30 K1 P2 X300 Y15 Z-99999 S3 ; probe near a leadscrew and calibrate 3 motors
+    G30 K1 P2 X295 Y25 Z-99999 S3 ; probe near a leadscrew and calibrate 3 motors
         echo "Current deviation: " ^ move.calibration.initial.deviation
         continue
 echo "Final deviation: " ^ move.calibration.initial.deviation

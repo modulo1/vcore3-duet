@@ -1,0 +1,88 @@
+{
+  "debug": {
+    "level": 2,
+    "ui_logging": false
+  },
+  "duet": {
+    "baud_rate": 115200,
+    "communication_type": 1,
+    "hostname": "192.168.2.8",
+    "password": "",
+    "poll_interval": 250
+  },
+  "sys": {
+    "brightness": 100,
+    "display_connected_message": true,
+    "enable_advanced_settings": false,
+    "usb_mode": 2
+  },
+  "themes": {
+    "duetscreen": {
+      "chroma": 0.019999999552965164,
+      "dark_mode": true,
+      "primary_hue": 245,
+      "secondary_hue": 50
+    },
+    "flat": {
+      "chroma": 0.0,
+      "dark_mode": true,
+      "primary_hue": 80,
+      "secondary_hue": 30
+    },
+    "industrial": {
+      "chroma": 0.019999999552965164,
+      "dark_mode": false,
+      "primary_hue": 245,
+      "secondary_hue": 50
+    },
+    "neon": {
+      "chroma": 0.05000000074505806,
+      "dark_mode": true,
+      "primary_hue": 340,
+      "secondary_hue": 45
+    },
+    "retro": {
+      "chroma": 0.029999999329447746,
+      "dark_mode": false,
+      "primary_hue": 65,
+      "secondary_hue": 115
+    },
+    "soft": {
+      "chroma": 0.07999999821186066,
+      "dark_mode": false,
+      "primary_hue": 250,
+      "secondary_hue": 180
+    }
+  },
+  "ui": {
+    "console_command_list_collapsed": false,
+    "dashboard": {
+      "file": {
+        "jobs": {
+          "display_mode": 0,
+          "sort_by": 1,
+          "sort_descending": true
+        },
+        "macros": {
+          "display_mode": 0
+        }
+      }
+    },
+    "font": "SpaceGrotesk-VariableFont_wght",
+    "home": {
+      "file": {
+        "jobs": {
+          "display_mode": 1
+        },
+        "macros": {
+          "display_mode": 0
+        }
+      }
+    },
+    "info_timeout": 5000,
+    "notification_auto_close_error": false,
+    "screensaver_timeout": 300,
+    "show_confirmation_dialogs": true,
+    "theme": "neon"
+  }
+}

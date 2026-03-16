@@ -10,12 +10,15 @@ M400       ; finish all moves, clear the buffer
 M703       ; load filament-specific config.g
 
 M98 P"0:/macros/config/configInputShaping.g" ; pull in input shaping parameters
+M400
+
 M98 P"0:/macros/config/configBuildPlate.g" ; pull in build plate parameters
-                                 ; heightmap, probe height, etc.
+                                           ; heightmap, probe height, etc.
+M400
 
 ;; chamber LEDs on
 M98 P"0:/macros/LEDs/1_LED-on.g"
-
+M400
 
 ;; home Z, tram bed
 G28 Z

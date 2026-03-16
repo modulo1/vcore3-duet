@@ -9,4 +9,4 @@ G1 Z5 F360     ; lift Z by 5mm
 G90            ; absolute positioning
 G1 X150 Y280 F6000 ; go to X150 Y280
 
-;M98 P"0:/macros/songs/charge.g"  
+M98 P"0:/macros/songs/charge.g"  

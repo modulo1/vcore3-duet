@@ -79,10 +79,10 @@ M586 P2 S0
 G4 S5
 M550 P"legionXY"                                           ;; in SBC mode, M550 goes in dsf-config.g, not config.g
 M552 S1
-M122 P500 S0
+;M122 P500 S0
 
 ;=== configuration -  PanelDue init ===;
-M575 P1 S4 B57600
+M575 P1 S4 B57600 
 
 ;=== configuration - printer ===;
 G90                                                        ;; absolute coordinates, relative extruder moves
@@ -123,8 +123,8 @@ M574 Z1 S2                                                ;; configure Z-probe (
 M558 P8 C"20.io0.in" H5:1 F300:120 T12000 A20 B0 K0         ;; inductive probe installed on RRF36.io0.in (20.io0.in)
 
 ;=== configuration - axis - mesh compensation and bed dismensions ===;
-;M98 P"0:/sys/configDefaultProbePoints.g"                     ;; define mesh grid with allowance for mesh generation on printed area only
-M557 X10:290 Y10:290 P20                                      ;; set values as you would normally do in config.g
+;M98 P"0:/macros/config/configDefaultProbePoints.g"                     ;; define mesh grid with allowance for mesh generation on printed area only
+M557 X20:290 Y20:270 P20                                      ;; set values as you would normally do in config.g
 
 if !exists(global.bedCenterX)                           ;; calculate bed center, insert into object model
     global bedCenterX = floor(move.axes[0].max / 2)
@@ -157,13 +157,6 @@ M143 H0 S120                                              ;; set heater H0 tempe
 ;=== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ===;
 M307 H0 R0.474 K0.219:0.000 D2.07 E1.35 S1.00 B0
 
-;=== configuration - sensor - accelerometer ===;
-M955 P20.0 I10                                            ;; create accelerometer on SHT36MAX3
-
-;;; I = accelerometer orientation, expressed as 2-digit number. see
-;;;  https://www.dropbox.com/s/hu2w5mk57l4zqpg/Accelerometer%20Orientation.pdf
-;;;  for all possible permutations
-
 ;=== configuration - sensor - chamber monitoring ===;
 M308 S5 P"0.spi.cs1" Y"bme280" A"Chamber"
 M308 S10 P"S5.2" Y"bme-humidity" A"Humidity[%]"
@@ -178,15 +171,21 @@ M950 P0 C"0.out1" Q2500                                                       ;;
 ;=== configuration - overrides ===;
 ;M501                                                                         ;; config-override.g should remain empty
 
-;=== configuration - tool - fan ===;
+;=== gizmo7 - tool - fan ===;
 M950 F1 C"0.out2" Q2500
 M106 P1 C"4028" S0 H-1
+;M950 F1 C"0.out4+0.out4.tach" Q250                                           ;; create fan F1 named "4028" with duet.out4+duet.out4.tach (0.out4+0.out4.tach)
+;M950 F1 C"!0.out2+0.out4.tach"                                               ;; create fan F1 named "4028" with duet.out4+duet.out4.tach (0.out4+0.out4.tach)
+;M106 P1 C"4028" S0 H-1
+;M950 F1 C"!0.out4"                                                           ;; create fan F1 named "4028" with duet.out4+duet.out4.tach (0.out4+0.out4.tach)
+;M106 P1 C"4028" S0 H-1
 
-;=== configuration - hotend - thermistor ===;
+;=== gizmo7 - hotend thermistor ===;
 M308 S1 P"20.max31865cs" Y"rtd-max31865" A"rapido2HF" F60 R430 W2
+;M308 S1 P"20.temp0" Y"pt1000" A"rapido2HF" R1000 W2                          ;; configure sensor 1 (S1) on pin RRF36.temp0 (20.temp0) as thermistor
 M950 H1 C"20.out0" T1                                                         ;; create heater output (H1) on SHT36MAX3.out0 (20.out0) and map to sensor 1 (T1)
 M307 H1 B0 S1.00                                                              ;; set PWM limit (S1.00)
-M563 P0 S"orbiter2.5" D0 H1 F1                                                ;; define tool0 (T0)
+M563 P0 S"vz-hextrudort+" D0 H1 F1                                                ;; define tool0 (T0)
                                                                               ;; assign fan F1, extruder drive D0 (E0) and heater H1 to tool T0 named "orbiter2.5"
 G10 P0 X0 Y0 Z0                                                               ;; set axis offsets, max temperature, initial temperature
 M143 H1 S290
@@ -200,37 +199,64 @@ G10 P0 R0 S0
 ;;; ; M303 T0 S240 F0.45
 ;;; replace M307 below with results from M303
 ;=== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ===;
-M307 H1 R8.197 K0.917:0.692 D0.89 E1.35 S1.00 B0 V0.0           ;; rapido2uhf, new-style pt1000, max31865
+M307 H1 R7.075 K0.777:0.642 D1.21 E1.35 S1.00 B0 V0.0           ;; rapido2hf, pt1000, max31865, 4010 fan
 
-;=== configuration - hotend - fan ===;
+;=== gizmo7 - fan - hotend ===;
 M950 F0 C"20.out2" Q250                                                           ;; create fan 0 (F0) on pin RRF.out2 (20.out2)
-M106 P0 C"toolhead" S0 H1 T45 L255                                                 ;; set fan 0 (P0) to thermostatic control (45C), full-speed (L255) named "tool"
+M106 P0 C"toolhead" S0 H1 T45 L255                                                ;; set fan 0 (P0) to thermostatic control (45C), full-speed (L255) named "tool"
 
-;=== configuration - extruder ===;
+;=== gizmo7 - extruder ===;
 M569 P20.0 S1 D2                                                              ;; Extruder, RRF36.driver0
-                                                                              ;; VZ-Hextrudort Low with LDO motor
+                                                                              ;; orbiter 2 with LDO motor
 M906 E1200                                                                    ;; set extruder motor current
 M350 E16 I1                                                                   ;; set microstepping to 16 with interpolation
-M92 E670.52
+M92 E670.18                                                                   ;; set e-steps
 M203 E7200                                                                    ;; set max speed, jerk, acceleration
-M205 E5.0
+;M205 E5.0
 M566 E300
 M201 E3000
+
+;=== gizmo7 - extruder ===;
+M569 P20.0 S0 D2                                                              ;; Extruder, 20.driver0
+                                                                              ;; vz-hextrudor with LDO motor
+M906 E1200                                                                    ;; set extruder motor current
+M350 E16 I1                                                                   ;; set microstepping to 16 with interpolation
+M92 E707.80                                                                   ;; set e-steps
+M203 E7200                                                                    ;; set max speed, jerk, acceleration
+;M205 E5.0
+M566 E600
+M201 E3000
+
+;=== gizmo7 - extruder ===;
+                                                                              ;; vz-hextrudort plus with LDO motor
+M906 E1200                                                                    ;; set extruder motor current
+M350 E16 I1                                                                   ;; set microstepping to 16 with interpolation
+M92 E549.96                                                                   ;; set e-steps
+M203 E7200                                                                    ;; set max speed, jerk, acceleration
+;M205 E5.0
+M566 E600
+M201 E5000
+
 
 ;=== configuration - scanning z-probe ===;
 M558 K1 P11 C"20.i2c.ldc1612" F12000:6000 T18000 A20
 M308 A"SZP" S4 Y"thermistor" P"20.temp1" T100000 B4092                        ;; thermistor on PCB/coil
-M98 P"0:/macros/config/configSZPnormal.g"                                               ;; we're using SZP touch mode
+M98 P"0:/macros/config/configSZPnormal.g"                                     ;; we're using SZP touch mode
 
-G31 K0 X-27.8 Y-12.0 Z0.80
-G31 K1 X0.0 Y15.00
+G31 K0 X-27.8 Y-12.0 Z0.80 
+G31 K1 X0.0 Y15.00  
 
-;=== configuration - options ===;
+;=== gizmo7 - options ===;
 M955 P20.0 I12                                                                ;; accelerometer on RRF36
+
+;;; I = accelerometer orientation, expressed as 2-digit number. see
+;;;  https://www.dropbox.com/s/hu2w5mk57l4zqpg/Accelerometer%20Orientation.pdf
+;;;  for all possible permutations
+
 M950 E0 C"20.rgbled" T2 U2 Q3000000                                           ;; configure toolhead LED E0 on SHT36MAX3.rgbled (20.rgbled)
 
-M98 P"0:/macros/config/configInputShaping.g"                                            ;; input shaping parameters
-;M98 P"0:/macros/config/configFilamentMonitor.g"                                        ;; filament monitor
+M98 P"0:/macros/config/configInputShaping.g"                                  ;; input shaping parameters
+;M98 P"0:/macros/config/configFilamentMonitor.g"                              ;; filament monitor
 
 M950 S1 C"0.io1.out"                                                          ;; set up 0.out6 as servo S1 - nozzle wiper
 M98 P"0:/macros/option/SERVO_WIPE_DISENGAGE.g"                                ;; ensure wiper is off the bed
@@ -242,10 +268,14 @@ T0 P0                                                                         ;;
 M703                                                                          ;; load filament specific gcode
                                                                               ;; I keep filament-specific PID tuning, retraction, and pressure advance
                                                                               ;; settings here.
+                                                                              ;; OrcaSlicer does it better; consider moving back
 
-;=== configuration - housekeeping ===;
-M98 P"0:/macros/config/configInitPost.g"                                    ;; set the last few variables we need that rely on loaded configuration
-M98 P"0:/macros/config/configBuildPlate.g"                             ;; see setBuildPlate.g for Z probe trigger value (not SZP), offset, trigger height and mesh fade.
-;=== discard if necessary ===;
+;=== configuration - bed - mesh compensation ===;
+M376 H4                                                ;; fade mesh compensation at 3mm
 
 ;=== configuration end ===;
+
+;=== configuration - housekeeping ===;
+;M98 P"0:/macros/config/configInitPost.g"                                      ;; set the last few variables we need that rely on loaded configuration
+;M98 P"0:/macros/config/configBuildPlate.g"                                    ;; see configBuildPlate.g for Z probe trigger value (not SZP), offset, trigger height and mesh fade.
+;=== discard if necessary ===;
