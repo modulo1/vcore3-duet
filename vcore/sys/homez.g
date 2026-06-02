@@ -31,7 +31,7 @@ M98 P"0:/macros/config/configSZPnormal.g"
 ; Get your probe's P value by moving to Z=6 manually after calibrating as described in configSZPnormal.g, and read the value reported in DWC then.
 ; if configSZPnormal.g is modified, these values must be updated too!
 
-G31 K1 Z5 P15761            
+G31 K1 Z5 P14355            
 G30 K1 S1                 ; execute Z homing to ensure printhead is close to bed
 
 

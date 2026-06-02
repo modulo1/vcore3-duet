@@ -13,7 +13,8 @@
   "sys": {
     "brightness": 100,
     "display_connected_message": true,
-    "enable_advanced_settings": false,
+    "enable_advanced_settings": true,
+    "upgrade_file_last_modified": 1773965404,
     "usb_mode": 2
   },
   "themes": {
@@ -64,25 +65,51 @@
           "sort_descending": true
         },
         "macros": {
-          "display_mode": 0
+          "display_mode": 0,
+          "sort_by": 0,
+          "sort_descending": false
         }
       }
     },
-    "font": "SpaceGrotesk-VariableFont_wght",
+    "extrusion": {
+      "distances": {
+        "selected": 25.0,
+        "values": [
+          1.0,
+          5.0,
+          25.0,
+          100.0
+        ]
+      },
+      "feedrates": {
+        "selected": 5.0,
+        "values": [
+          1.0,
+          5.0,
+          20.0,
+          50.0
+        ]
+      }
+    },
+    "font": "IBMPlexSans",
     "home": {
       "file": {
         "jobs": {
-          "display_mode": 1
+          "display_mode": 1,
+          "sort_by": 1,
+          "sort_descending": true
         },
         "macros": {
-          "display_mode": 0
+          "display_mode": 0,
+          "sort_by": 0,
+          "sort_descending": false
         }
       }
     },
     "info_timeout": 5000,
     "notification_auto_close_error": false,
     "screensaver_timeout": 300,
-    "show_confirmation_dialogs": true,
+    "show_confirmation_dialogs": false,
     "theme": "neon"
   }
 }

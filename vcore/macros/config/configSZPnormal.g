@@ -8,4 +8,5 @@ M558.3 K1 S0               ; S0 -> enter normal probing mode
 ;; replace Snnn and Rnnn below
 
 ;M558.2 K1 S13 R214858
-M558.2. K1 S14 R214191
+;M558.2 K1 S14 R214191
+M558.2 K1 S14 R215600
